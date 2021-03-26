@@ -1,0 +1,21 @@
+[submodule "pack/git/start/vim-commentary"]
+	path = pack/git/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary
+[submodule "pack/git/start/vim-endwise"]
+	path = pack/git/start/vim-endwise
+	url = https://github.com/tpope/vim-endwise
+[submodule "pack/git/start/vim-repeat"]
+	path = pack/git/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat
+[submodule "pack/git/start/vim-surround"]
+	path = pack/git/start/vim-surround
+	url = https://github.com/tpope/vim-surround
+[submodule "pack/git/start/vim-unimpaired"]
+	path = pack/git/start/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired
+[submodule "pack/git/start/targets.vim"]
+	path = pack/git/start/targets.vim
+	url = https://github.com/wellle/targets.vim
+[submodule "pack/git/start/vim-indent-object"]
+	path = pack/git/start/vim-indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object
