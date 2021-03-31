@@ -1,5 +1,3 @@
-" macvim 8.2.2576+: brew install macvim
-
 " ----------------------------------------------------------------------------
 " Basics
 " ----------------------------------------------------------------------------
@@ -20,6 +18,7 @@ set belloff=all
 set clipboard=unnamed,unnamedplus
 set completeopt=menuone,popup
 set foldlevelstart=99
+set exrc | " search current dir for .vimrc/_vimrc/.exrc. First used, only.
 set hidden
 set history=200
 set hlsearch
@@ -38,7 +37,7 @@ set scrolloff=2
 set showcmd
 set showmatch
 set showmode
-set smartcase
+set ignorecase smartcase
 set tags=./tags;,tags;
 set ttimeout
 set ttimeoutlen=100
@@ -56,14 +55,14 @@ let g:netrw_list_hide=netrw_gitignore#Hide() . '.*\.swp$'
 "  Finding, Grepping, Jumping
 " ----------------------------------------------------------------------------
 set path+=**10
-if executable('rg')
-  set grepprg=rg\ --vimgrep
-elseif executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
+" if executable('rg')
+"   set grepprg=rg\ --vimgrep
+" elseif executable('ag')
+"   set grepprg=ag\ --nogroup\ --nocolor
+" endif
 nnoremap <Leader>/ :grep<Space>
-cnoremap grep Grep
-command! -nargs=+ -bar Grep :silent! grep! <args>|redraw!
+" cnoremap grep Grep
+" command! -nargs=+ -bar Grep :silent! grep! <args>|redraw!
 
 " ----------------------------------------------------------------------------
 "  Remaps
@@ -86,7 +85,7 @@ nnoremap <silent><F9> :set list!<CR>
 nnoremap <silent><F10> :set spell!<CR>
 nnoremap <Leader>w :update<CR>
 nnoremap <Leader>q :bdelete<CR>
-nnoremap <Leader>, :edit $MYGVIMRC<CR>
+nnoremap <Leader>, :edit $MYVIMRC<CR>
 nnoremap <Leader>t :e <C-R>=expand('~/.vim/after/ftplugin/'.&ft.'.vim')<CR><CR>
 tnoremap <C-v><Esc> <Esc>
 nnoremap <silent><F1>f :help list-functions<CR>
@@ -95,7 +94,11 @@ nnoremap <Leader><Leader> :b #<CR>
 nnoremap <Leader>b :<C-u>b <C-d>
 nnoremap <Leader>e :<C-u>e <C-d>
 nnoremap <Leader>n :nohl<CR>
+nnoremap <C-p> :FZF<CR>
 
+" I like the re-center on jumps.
+nnoremap g; g;zz
+nnoremap g, g,zz
 " ----------------------------------------------------------------------------
 "  Autocommands
 " ----------------------------------------------------------------------------
@@ -130,7 +133,7 @@ autocmd vimrc BufReadPost *
   \   exe "normal g`\"" |
   \ endif
 if (v:version >=# 802)
-  runtime! cfilter
+  packadd! cfilter
 endif
 
 " ----------------------------------------------------------------------------
@@ -140,7 +143,7 @@ command! Api :help list-functions<CR>
 command! Cd :cd %:h
 command! TodoLocal :botright lvimgrep /\v\CTODO|FIXME|HACK|DEV/ %<CR>
 command! Only :.+,$bwipeout<CR>
-command! Todo :botright silent! vimgrep /\v\CTODO|FIXME|HACK|DEV/ *<CR>
+command! Todo :noautocmd silent! vimgrep /\v\CTODO|FIXME|HACK|DEV/ *<CR>
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
@@ -149,3 +152,33 @@ if !exists(':DiffOrig')
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
   \ | wincmd p | diffthis
 endif
+
+" ----------------------------------------------------------------------------
+" Work area
+" ----------------------------------------------------------------------------
+set runtimepath+=/usr/local/opt/fzf
+
+"  TODO: this errors out.
+function! RangeChooser() abort
+  let temp = tempname()
+  if has('gui_running')
+    " execute 'silent !xterm -e ranger --choosefiles=' . shellescape(temp)
+  else
+    execute 'silent !ranger --choosefiles=' . shellescape(temp)
+  endif
+  if !filereadable(temp)
+    redraw!
+    " Nothing to read.
+    return
+  endif
+  " Edit the first item.
+  exec 'edit '. fnameescape(names[0])
+  " Add any remaining items to the argument list (']a' with unimpaired.vim)
+  for name in names[1:]
+    exec 'argadd ' . fnameescape(name)
+  endfor
+endfunction
+command! -bar RangerChooser call RangeChooser()
+nnoremap <leader>R :<C-u>RangerChooser<CR>
+
+colorscheme gruvbox

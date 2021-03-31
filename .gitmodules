@@ -19,3 +19,6 @@
 [submodule "pack/git/start/vim-indent-object"]
 	path = pack/git/start/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
+[submodule "pack/git/start/gruvbox"]
+	path = pack/git/start/gruvbox
+	url = https://github.com/morhetz/gruvbox

@@ -21,7 +21,7 @@ set guioptions-=b
 set tabpagemax=100
 
 " ----------------------------------------------------------------------------
-"  GUI keybindins
+"  GUI keybindings
 " ----------------------------------------------------------------------------
 " Allows binding of all Option-key combinations
 set macmeta
