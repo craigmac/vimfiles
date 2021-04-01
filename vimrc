@@ -1,3 +1,7 @@
+if (v:version < 802)
+  finish
+endif
+
 " ----------------------------------------------------------------------------
 " Basics
 " ----------------------------------------------------------------------------
@@ -18,6 +22,7 @@ set belloff=all
 set clipboard=unnamed,unnamedplus
 set completeopt=menuone,popup
 set foldlevelstart=99
+set diffopt+=algorithm:patience
 set exrc | " search current dir for .vimrc/_vimrc/.exrc. First used, only.
 set hidden
 set history=200
@@ -28,20 +33,23 @@ set listchars=eol:$,space:·,
 set modeline
 set mouse=a
 set noswapfile
+set nowrap
 set nrformats-=octal
 set number
 set path-=/usr/include
 set relativenumber
 set ruler
-set scrolloff=2
+set scrolloff=2 sidescrolloff=2
 set showcmd
 set showmatch
 set showmode
 set ignorecase smartcase
 set tags=./tags;,tags;
+set notermguicolors
 set ttimeout
 set ttimeoutlen=100
 set wildignore=*/.git/*,*/.hg/*,*/.svn/*,*/.node_modules/*,*.o,*.obj
+set wildignore+=*.o,*.obj,*.bak,*.exe,*.swp,*.pdf,*.docx,*.xlsx,*.png,*.jpg
 set wildcharm=<C-z>
 set wildmenu
 set wildmode=list:longest,longest:full
@@ -52,17 +60,12 @@ let g:netrw_winsize=15
 let g:netrw_list_hide=netrw_gitignore#Hide() . '.*\.swp$'
 
 " ----------------------------------------------------------------------------
-"  Finding, Grepping, Jumping
+"  Tooling
 " ----------------------------------------------------------------------------
-set path+=**10
-" if executable('rg')
-"   set grepprg=rg\ --vimgrep
-" elseif executable('ag')
-"   set grepprg=ag\ --nogroup\ --nocolor
-" endif
-nnoremap <Leader>/ :grep<Space>
-" cnoremap grep Grep
-" command! -nargs=+ -bar Grep :silent! grep! <args>|redraw!
+if executable('rg')
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m
+endif
 
 " ----------------------------------------------------------------------------
 "  Remaps
@@ -92,13 +95,27 @@ nnoremap <silent><F1>f :help list-functions<CR>
 nnoremap <silent><F1>k :help keycodes<CR>
 nnoremap <Leader><Leader> :b #<CR>
 nnoremap <Leader>b :<C-u>b <C-d>
+nnoremap <Leader>c :<C-u>cd <C-d>
 nnoremap <Leader>e :<C-u>e <C-d>
 nnoremap <Leader>n :nohl<CR>
-nnoremap <C-p> :FZF<CR>
-
-" I like the re-center on jumps.
+nnoremap <Leader>/ :silent! grep!<Space> 
+nnoremap gh :diffget //2<CR>
+nnoremap gl :diffget //3<CR>
 nnoremap g; g;zz
 nnoremap g, g,zz
+
+" function! s:silentgrep() abort
+"   silent! grep! <Bar> redraw!
+" endfunction
+
+if has('mac')
+  " Terminal.app this works, GUI keybinds setup in gvimrc
+  nnoremap j <C-w>p<C-e><C-w>p
+  nnoremap k <C-w>p<C-y><C-w>p
+  nnoremap J <C-w>p<C-d><C-w>p
+  nnoremap K <C-w>p<C-u><C-w>p
+endif
+
 " ----------------------------------------------------------------------------
 "  Autocommands
 " ----------------------------------------------------------------------------
@@ -153,32 +170,4 @@ if !exists(':DiffOrig')
   \ | wincmd p | diffthis
 endif
 
-" ----------------------------------------------------------------------------
-" Work area
-" ----------------------------------------------------------------------------
-set runtimepath+=/usr/local/opt/fzf
-
-"  TODO: this errors out.
-function! RangeChooser() abort
-  let temp = tempname()
-  if has('gui_running')
-    " execute 'silent !xterm -e ranger --choosefiles=' . shellescape(temp)
-  else
-    execute 'silent !ranger --choosefiles=' . shellescape(temp)
-  endif
-  if !filereadable(temp)
-    redraw!
-    " Nothing to read.
-    return
-  endif
-  " Edit the first item.
-  exec 'edit '. fnameescape(names[0])
-  " Add any remaining items to the argument list (']a' with unimpaired.vim)
-  for name in names[1:]
-    exec 'argadd ' . fnameescape(name)
-  endfor
-endfunction
-command! -bar RangerChooser call RangeChooser()
-nnoremap <leader>R :<C-u>RangerChooser<CR>
-
-colorscheme gruvbox
+colorscheme freyeday
