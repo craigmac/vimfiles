@@ -1,0 +1,48 @@
+[submodule "pack/git/start/ale"]
+	path = pack/git/start/ale
+	url = https://github.com/w0rp/ale
+[submodule "pack/git/start/apprentice"]
+	path = pack/git/start/apprentice
+	url = http://github.com/romainl/apprentice
+[submodule "pack/git/start/vim-cool"]
+	path = pack/git/start/vim-cool
+	url = https://github.com/romainl/vim-cool
+[submodule "pack/git/start/vim-qf"]
+	path = pack/git/start/vim-qf
+	url = https://github.com/romainl/vim-qf
+[submodule "pack/git/start/vim-repeat"]
+	path = pack/git/start/vim-repeat
+	url = https://github.com/tpope/vim-repeat
+[submodule "pack/git/start/vim-surround"]
+	path = pack/git/start/vim-surround
+	url = https://github.com/tpope/vim-surround
+[submodule "pack/git/start/vim-tmux-navigator"]
+	path = pack/git/start/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "pack/git/start/vim-markdown"]
+	path = pack/git/start/vim-markdown
+	url = https://github.com/tpope/vim-markdown
+[submodule "pack/git/start/colorschemes"]
+	path = pack/git/start/colorschemes
+	url = https://github.com/vim/colorschemes
+[submodule "pack/git/opt/apprentice"]
+	path = pack/git/opt/apprentice
+	url = https://github.com/romainl/apprentice
+[submodule "pack/git/start/vim-commentary"]
+	path = pack/git/start/vim-commentary
+	url = https://github.com/tpope/vim-commentary
+[submodule "pack/git/start/vim-habaurora"]
+	path = pack/git/start/vim-habaurora
+	url = https://github.com/habamax/vim-habaurora
+[submodule "pack/git/opt/vim-fugitive"]
+	path = pack/git/opt/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/git/opt/vim-rhubarb"]
+	path = pack/git/opt/vim-rhubarb
+	url = https://github.com/tpope/vim-rhubarb
+[submodule "pack/git/start/vim-fugitive"]
+	path = pack/git/start/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/git/start/vim-rhubarb"]
+	path = pack/git/start/vim-rhubarb
+	url = https://github.com/tpope/vim-rhubarb
