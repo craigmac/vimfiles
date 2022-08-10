@@ -41,6 +41,6 @@ command! -nargs=* -complete=customlist,<SID>MakeOptions TermMake :terminal make 
 function! s:MakeOptions(ArgLead, CmdLine, CursorPost) abort
   " :h :command-completion-custom
 	" TODO: hardcoded, maybe add parser to make this generic for any make-based build system.
-	return ['hbo', 'next', 'nextnextonly', 'nextnextonly', 'production', 'sky', 'playstation']
+	return ['hbo', 'next', 'nextonly', 'nextnextonly', 'production', 'sky', 'playstation']
 endfunction
 
