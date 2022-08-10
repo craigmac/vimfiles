@@ -47,6 +47,7 @@ set undofile undodir=~/.vim/undodir
 set viewoptions-=options
 set wildmenu wildoptions=fuzzy,pum,tagfile
 if executable('rg') | set grepprg=rg\ -i\ --vimgrep grepformat=%f:%l:%c:%m | endif
+if executable('fzf') && has('mac') | set rtp+=/usr/local/opt/fzf | endif
 
 # tmux/emulator/tui specific {{{1
 
@@ -73,13 +74,13 @@ if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
 	&t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 	&t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-	# Enable bracketed paste mode, see  :help xterm-bracketed-paste
+	# Enable bracketed paste mode, see	:help xterm-bracketed-paste
 	&t_BE = "\<Esc>[?2004h"
 	&t_BD = "\<Esc>[?2004l"
 	&t_PS = "\<Esc>[200~"
 	&t_PE = "\<Esc>[201~"
 
-	# Enable focus event tracking, see  :help xterm-focus-event
+	# Enable focus event tracking, see	:help xterm-focus-event
 	&t_fe = "\<Esc>[?1004h"
 	&t_fd = "\<Esc>[?1004l"
 	execute "set <FocusGained>=\<Esc>[I"
@@ -93,11 +94,7 @@ if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
 endif
 
 # Plugins {{{1
-# packadd {{{2
 packadd! matchit
-packadd! vim-fugitive
-packadd! vim-rhubarb
-
 # https://github.com/tpope/vim-markdown {{{2
 g:markdown_recommended_style = 0
 g:markdown_minlines = 5000
@@ -147,6 +144,48 @@ nnoremap <Leader>g? :Git! log -p -S %<Space>
 nnoremap <Leader>g* :Ggrep! -Hnri --quiet <C-r>=expand("<cword>")<CR><CR>
 nnoremap <Leader>gP <cmd>G push<CR>
 nnoremap <Leader>gp <cmd>G pull<CR>
+nnoremap <Leader>gb <cmd>Git blame<CR>
+xnoremap <Leader>gb :Git blame<CR>
+# TODO: investigate using :Git difftool -y develop for pr review!
+
+# https://github.com/junegunn/fzf.vim {{{2
+g:fzf_buffers_jump = 1
+g:fzf_preview_window = ['right:50%:hidden', 'ctrl-l']
+# TODO: combine these to use just leader-f and fallback to Files w no git repo
+nnoremap <Leader>e <Cmd>GFiles<CR>
+nnoremap <Leader>F <Cmd>Files<CR>
+nnoremap <Leader>b <Cmd>Buffers<CR>
+nnoremap gO <Cmd>BTags<CR>
+
+def Build_quickfix_list(lines: list<string>)
+	setqflist(map(copy(lines), '{ "filename": v:val }'))
+	copen
+	cc
+enddef
+
+g:fzf_action = {
+	'ctrl-q': function('Build_quickfix_list'),
+	'ctrl-t': 'tab split',
+	'ctrl-x': 'split',
+	'ctrl-v': 'vsplit'
+}
+g:fzf_colors = {
+	'fg': ['fg', 'Normal'],
+	'bg': ['bg', 'Normal'],
+	'hl': ['fg', 'Comment'],
+	'fg+': ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+	'bg+': ['bg', 'CursorLine', 'CursorColumn'],
+	'hl+': ['fg', 'Statement'],
+	'info': ['fg', 'PreProc'],
+	'border': ['fg', 'Ignore'],
+	'prompt': ['fg', 'Conditional'],
+	'pointer': ['fg', 'Exception'],
+	'marker': ['fg', 'Keyword'],
+	'spinner': ['fg', 'Label'],
+	'header': ['fg', 'Comment'],
+	'preview-fg': ['fg', 'Normal'],
+	'preview-bg': ['bg', 'Normal']
+}
 
 # Colors {{{1
 augroup Vimrc
@@ -173,6 +212,7 @@ augroup Vimrc
 	}
 	autocmd Colorscheme solarized8_flat {
 		highlight! link CurSearch IncSearch
+		set fillchars=vert:\ ,fold:\ ,eob:\ 
 	}
 augroup END
 
@@ -185,17 +225,6 @@ if !&termguicolors | g:solarized_use16 = 1 | endif
 colorscheme solarized8_flat
 
 # Mappings {{{1
-nmap <Leader>ff <ScriptCmd>fuzzy.File()<CR>
-nmap <Leader>b <ScriptCmd>fuzzy.Buffer()<CR>
-nmap <Leader>fm <ScriptCmd>fuzzy.MRU()<CR>
-nmap <Leader>fg <ScriptCmd>fuzzy.GitFile()<CR>
-nmap <Leader>fc <ScriptCmd>fuzzy.Colorscheme()<CR>
-# nmap <Leader>fs <ScriptCmd>fuzzy.Session()<CR>
-# nmap <Leader>fv <ScriptCmd>fuzzy.GitFile(fnamemodify($MYVIMRC, ":p:h"))<CR>
-# nmap <Leader>fb <ScriptCmd>fuzzy.Bookmark()<CR>
-# nmap <Leader>ft <ScriptCmd>fuzzy.Filetype()<CR>
-# nmap <Leader>fh <ScriptCmd>fuzzy.Highlight()<CR>
-
 nnoremap <Leader>/ :grep<Space>
 nnoremap <Leader>v :noautocmd vimgrep /\v/gj **/*<S-Left><S-Left><Right><Right><Right>
 nnoremap <Leader>! :Redir<Space>
@@ -205,15 +234,6 @@ nnoremap <Leader><Leader> <Cmd>buffer #<CR>
 command! -nargs=? -complete=shellcmd Terminal terminal ++close <q-args>
 nnoremap <leader>3 :terminal<space>
 nnoremap <leader>4 :Terminal<space>
-
-nnoremap [q <Cmd>cprevious<CR>
-nnoremap ]q <Cmd>cnext<CR>
-nnoremap [Q <Cmd>cfirst<CR>
-nnoremap ]Q <Cmd>clast<CR>
-nnoremap [l <Cmd>lprevious<CR>
-nnoremap ]l <Cmd>lnext<CR>
-nnoremap ]L <Cmd>llast<CR>
-nnoremap [L <Cmd>lfirst<CR>
 
 cnoremap <expr> %. getcmdtype() == ':' ? expand('%:h') .. '/' : '%.'
 cnoremap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
@@ -227,14 +247,10 @@ nnoremap <Leader><CR> <Cmd>source %<CR> <bar> <Cmd>nohlsearch<CR>
 
 nnoremap gh <Cmd>diffget //2<CR>
 nnoremap gl <Cmd>diffget //3<CR>
-nnoremap yol <Cmd>setlocal list!<CR>
-nnoremap yon <Cmd>setlocal number!<CR>
-nnoremap yor <Cmd>setlocal relativenumber!<CR>
-nnoremap yos <Cmd>setlocal spell!<CR>
-nnoremap yow <Cmd>setlocal wrap!<CR>
 
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
+
 # Workshop {{{1
 if viking.UsingGUIVim()
 	# scroll other window
@@ -252,10 +268,18 @@ if viking.UsingGUIVim()
 	tnoremap <silent> <M-l> <C-\><C-n><cmd>TmuxNavigateRight<CR>
 endif
 
+# Experimental unimpaired toggle between tab/spaces in file
+# ISSUES: 
+# - leaves mixed tabs/spaces if 5 spaces and tabstop is 2 (1 extra space)
+# - if there's two spaces in between text (not at beginning of line),
+#   it replaces it with a tab character there too. See warning in :h
+#   retab-example
+nnoremap yo<Tab> <Cmd>%retab!<CR>
+
 # TODO:
 # - add binding to SynGroup
 # - add '`' to matchit pairs in markdown files
 
 # }}}
 
-# vi: fdm=marker:nowrap:ft=vim:fdl=1:list
+# vi: fdm=marker:nowrap:ft=vim:fdl=1:nolist

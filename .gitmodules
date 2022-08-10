@@ -46,3 +46,9 @@
 [submodule "pack/git/start/vim-rhubarb"]
 	path = pack/git/start/vim-rhubarb
 	url = https://github.com/tpope/vim-rhubarb
+[submodule "pack/git/start/fzf.vim"]
+	path = pack/git/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+[submodule "pack/git/start/vim-unimpaired"]
+	path = pack/git/start/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired
