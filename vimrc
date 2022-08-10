@@ -7,15 +7,11 @@ filetype plugin indent on
 syntax on
 scriptencoding utf-8
 g:mapleader = ' '
-
 set autoindent smartindent
 set autoread autoshelldir
 set backspace=indent,eol,start
 set belloff=all
-# put visual and normal mode actions that would normally go to unnamed " register,
-# like yanks, into both the * (gui selection) and + (gui clipboard) registers,
-# also allows mouse selections to copy to both on select
-set clipboard^=unnamed,unnamedplus,autoselect,autoselectplus
+set clipboard^=unnamed,unnamedplus
 set complete-=i completeopt=menuone,popup
 set diffopt+=algorithm:patience,vertical
 set errorformat+=%f # :cgetfile list-of-filenames.txt
@@ -48,50 +44,6 @@ set viewoptions-=options
 set wildmenu wildoptions=fuzzy,pum,tagfile
 if executable('rg') | set grepprg=rg\ -i\ --vimgrep grepformat=%f:%l:%c:%m | endif
 if executable('fzf') && has('mac') | set rtp+=/usr/local/opt/fzf | endif
-
-# tmux/emulator/tui specific {{{1
-
-# turns off :h modifyOtherKeys everywhere, in case it's on, it conflicts with way
-# tmux sends M-<key> bindings, and we don't NEED ability to distinguish C-[
-# and C-{, etc., when iTerm is detected it's turned on.
-
-if !viking.UsingGUIVim()
-	# code to put (T)erminal (I)nto 'raw' mode
-	&t_TI = ""
-	# code to put (T)erminal raw mode to an (E)nd
-	&t_TE = ""
-	
-	# (S)tart (I)nsert mode with bar shape (6)
-	&t_SI = "\<Esc>[6 q"
-	# (E)xit (I)nsert mode to box shape (2)
-	&t_EI = "\<Esc>[2 q"
-endif
-
-# :help 'tmux-integration'
-#  TODO: put all this in autload/tmux.vim
-if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
-	set ttymouse=sgr
-	&t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-	&t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-
-	# Enable bracketed paste mode, see	:help xterm-bracketed-paste
-	&t_BE = "\<Esc>[?2004h"
-	&t_BD = "\<Esc>[?2004l"
-	&t_PS = "\<Esc>[200~"
-	&t_PE = "\<Esc>[201~"
-
-	# Enable focus event tracking, see	:help xterm-focus-event
-	&t_fe = "\<Esc>[?1004h"
-	&t_fd = "\<Esc>[?1004l"
-	execute "set <FocusGained>=\<Esc>[I"
-	execute "set <FocusLost>=\<Esc>[O"
-
-	# Enable modified arrow keys, see  :help arrow_modifiers
-	execute "silent! set <xUp>=\<Esc>[@;*A"
-	execute "silent! set <xDown>=\<Esc>[@;*B"
-	execute "silent! set <xRight>=\<Esc>[@;*C"
-	execute "silent! set <xLeft>=\<Esc>[@;*D"
-endif
 
 # Plugins {{{1
 packadd! matchit
