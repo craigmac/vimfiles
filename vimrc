@@ -1,5 +1,7 @@
 vim9script
 import "./plugin/viking.vim" as viking
+import autoload "fuzzy.vim"
+
 # Options {{{1
 filetype plugin indent on
 syntax on
@@ -44,6 +46,7 @@ set title
 set undofile undodir=~/.vim/undodir
 set viewoptions-=options
 set wildmenu wildoptions=fuzzy,pum,tagfile
+if executable('rg') | set grepprg=rg\ -i\ --vimgrep grepformat=%f:%l:%c:%m | endif
 
 # tmux/emulator/tui specific {{{1
 
@@ -151,27 +154,49 @@ augroup Vimrc
 	autocmd ColorScheme habamax,habarena {
 		# use VS style green comments
 		highlight! link Comment String
+		highlight! link markdownUrl htmlLink
+		# underline here is odd because you can't click on it
+		highlight! link markdownLinkText String
 	}
 	autocmd ColorScheme * {
-		# custom ALE highlighting for all colorschemes
 		highlight! link ALEError SpellBad
 		highlight! link ALEWarning SpellRare
 		highlight! link ALEInfo SpellCap
 		highlight! link ALEStyleError SpellBad
 		highlight! link ALEStyleWarning SpellRare
 	}
+	autocmd Colorscheme solarized8,solarized8_high,solarized8_low {
+		highlight! TabLine cterm=NONE ctermfg=12 ctermbg=7 gui=NONE guifg=#839496 guibg=#eee8d5
+		highlight! TabLineFill cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+		highlight! TabLineSel cterm=reverse gui=reverse guifg=#586e75 guibg=#eee8d5
+		highlight! link CurSearch IncSearch
+	}
+	autocmd Colorscheme solarized8_flat {
+		highlight! link CurSearch IncSearch
+	}
 augroup END
 
-if has('gui_running')
-	set termguicolors
-endif
+if has('gui_running') | set termguicolors | endif
 
-# colorscheme habamax
-colorscheme habarena
-
+g:solarized_italics = 1
+g:solarized_visibility = 'low'
+g:solarized_extra_hi_groups = 1
+if !&termguicolors | g:solarized_use16 = 1 | endif
+colorscheme solarized8_flat
 
 # Mappings {{{1
-nmap <Leader>/ :grep<Space>
+nmap <Leader>ff <ScriptCmd>fuzzy.File()<CR>
+nmap <Leader>b <ScriptCmd>fuzzy.Buffer()<CR>
+nmap <Leader>fm <ScriptCmd>fuzzy.MRU()<CR>
+nmap <Leader>fg <ScriptCmd>fuzzy.GitFile()<CR>
+nmap <Leader>fc <ScriptCmd>fuzzy.Colorscheme()<CR>
+# nmap <Leader>fs <ScriptCmd>fuzzy.Session()<CR>
+# nmap <Leader>fv <ScriptCmd>fuzzy.GitFile(fnamemodify($MYVIMRC, ":p:h"))<CR>
+# nmap <Leader>fb <ScriptCmd>fuzzy.Bookmark()<CR>
+# nmap <Leader>ft <ScriptCmd>fuzzy.Filetype()<CR>
+# nmap <Leader>fh <ScriptCmd>fuzzy.Highlight()<CR>
+
+nnoremap <Leader>/ :grep<Space>
 nnoremap <Leader>v :noautocmd vimgrep /\v/gj **/*<S-Left><S-Left><Right><Right><Right>
 nnoremap <Leader>! :Redir<Space>
 nnoremap <Leader>y <cmd>%y +<CR>
@@ -227,6 +252,10 @@ if viking.UsingGUIVim()
 	tnoremap <silent> <M-l> <C-\><C-n><cmd>TmuxNavigateRight<CR>
 endif
 
+# TODO:
+# - add binding to SynGroup
+# - add '`' to matchit pairs in markdown files
+
 # }}}
 
-# vi: fdm=marker:nowrap:ft=vim:fdl=0:list
+# vi: fdm=marker:nowrap:ft=vim:fdl=1:list
