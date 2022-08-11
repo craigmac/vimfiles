@@ -98,12 +98,10 @@ nnoremap <Leader>gP <cmd>G push<CR>
 nnoremap <Leader>gp <cmd>G pull<CR>
 nnoremap <Leader>gb <cmd>Git blame<CR>
 xnoremap <Leader>gb :Git blame<CR>
-# TODO: investigate using :Git difftool -y develop for pr review!
 
 # https://github.com/junegunn/fzf.vim {{{2
 g:fzf_buffers_jump = 1
 g:fzf_preview_window = ['right:50%:hidden', 'ctrl-l']
-# TODO: combine these to use just leader-f and fallback to Files w no git repo
 nnoremap <Leader>e <Cmd>GFiles<CR>
 nnoremap <Leader>F <Cmd>Files<CR>
 nnoremap <Leader>b <Cmd>Buffers<CR>
