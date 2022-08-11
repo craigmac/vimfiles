@@ -35,7 +35,7 @@ set sessionoptions-=options
 set shortmess-=cS
 set showcmd showmatch showtabline=2
 set splitbelow splitright
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %Y\ %{FugitiveStatusline()}
+set statusline=%<%f\ %h%m%r%=%P\ %{FugitiveStatusline()}
 set tags=./tags;,tags;
 set ttimeout ttimeoutlen=100
 set title
