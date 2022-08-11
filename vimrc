@@ -199,10 +199,18 @@ tnoremap <silent> <M-l> <C-\><C-n><C-w>l<CR>
 #   retab-example
 nnoremap yo<Tab> <Cmd>%retab!<CR>
 
-# TODO:
-# - add binding to SynGroup
-# - add '`' to matchit pairs in markdown files
-
 # }}}
 
-# vi: fdm=marker:nowrap:ft=vim:fdl=1:nolist
+# TODO: ale_floating_window_border idx 1 too narrow
+# TODO: break up viking.vim stuff into autoload/* files
+# TODO: add binding to SynGroup
+# TODO: add '`' to matchit pairs in markdown files
+# TODO: investigate using :Git difftool -y develop for pr review!
+# TODO: combine these to use just leader-f and fallback to Files w no git repo
+# TODO: on termwinenter? binding to auto enter insert mode - least suprise
+# TODO: use <C-M-hjkl> in all modes to resize borders
+# TODO: send selected term bindings from habamax
+# TODO: for markdown files in my work directory using {% comment %} for gcc
+# TODO: fzf, turn on the C-n,C-p for history
+
+# vi: fdm=marker:nowrap:ft=vim:fdl=0:nolist
