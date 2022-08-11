@@ -143,38 +143,15 @@ g:fzf_colors = {
 augroup Vimrc
 	autocmd!
 	autocmd ColorScheme habamax,habarena {
-		# use VS style green comments
 		highlight! link Comment String
 		highlight! link markdownUrl htmlLink
 		# underline here is odd because you can't click on it
 		highlight! link markdownLinkText String
 	}
-	autocmd ColorScheme * {
-		highlight! link ALEError SpellBad
-		highlight! link ALEWarning SpellRare
-		highlight! link ALEInfo SpellCap
-		highlight! link ALEStyleError SpellBad
-		highlight! link ALEStyleWarning SpellRare
-	}
-	autocmd Colorscheme solarized8,solarized8_high,solarized8_low {
-		highlight! TabLine cterm=NONE ctermfg=12 ctermbg=7 gui=NONE guifg=#839496 guibg=#eee8d5
-		highlight! TabLineFill cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-		highlight! TabLineSel cterm=reverse gui=reverse guifg=#586e75 guibg=#eee8d5
-		highlight! link CurSearch IncSearch
-	}
-	autocmd Colorscheme solarized8_flat {
-		highlight! link CurSearch IncSearch
-		set fillchars=vert:\ ,fold:\ ,eob:\ 
-	}
 augroup END
 
 if has('gui_running') | set termguicolors | endif
-
-g:solarized_italics = 1
-g:solarized_visibility = 'low'
-g:solarized_extra_hi_groups = 1
-if !&termguicolors | g:solarized_use16 = 1 | endif
-colorscheme solarized8_flat
+colorscheme habamax
 
 # Mappings {{{1
 nnoremap <Leader>/ :grep<Space>
