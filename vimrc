@@ -178,23 +178,19 @@ nnoremap gl <Cmd>diffget //3<CR>
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
 
-# Workshop {{{1
-if viking.UsingGUIVim()
-	# scroll other window
-	nnoremap <M-J> <C-w>p<C-d><C-w>p
-	nnoremap <M-K> <C-w>p<C-u><C-w>p
-	# we will use xnoremap <M-jkl> binding to do something else?
-	nnoremap <silent> <M-h> <C-\><C-n><cmd>TmuxNavigateLeft<CR>
-	nnoremap <silent> <M-j> <C-\><C-n><cmd>TmuxNavigateDown<CR>
-	nnoremap <silent> <M-k> <C-\><C-n><cmd>TmuxNavigateUp<CR>
-	nnoremap <silent> <M-l> <C-\><C-n><cmd>TmuxNavigateRight<CR>
-	# TODO: on termwinenter? binding to auto enter insert mode - least suprise
-	tnoremap <silent> <M-h> <C-\><C-n><cmd>TmuxNavigateLeft<CR>
-	tnoremap <silent> <M-j> <C-\><C-n><cmd>TmuxNavigateDown<CR>
-	tnoremap <silent> <M-k> <C-\><C-n><cmd>TmuxNavigateUp<CR>
-	tnoremap <silent> <M-l> <C-\><C-n><cmd>TmuxNavigateRight<CR>
-endif
+# scroll other window
+nnoremap <M-J> <C-w>p<C-d><C-w>p
+nnoremap <M-K> <C-w>p<C-u><C-w>p
+nnoremap <silent> <M-h> <C-\><C-n><C-w>h<CR>
+nnoremap <silent> <M-j> <C-\><C-n><C-w>j<CR>
+nnoremap <silent> <M-k> <C-\><C-n><C-w>k<CR>
+nnoremap <silent> <M-l> <C-\><C-n><C-w>l<CR>
+tnoremap <silent> <M-h> <C-\><C-n><C-w>h<CR>
+tnoremap <silent> <M-j> <C-\><C-n><C-w>j<CR>
+tnoremap <silent> <M-k> <C-\><C-n><C-w>k<CR>
+tnoremap <silent> <M-l> <C-\><C-n><C-w>l<CR>
 
+# Workshop {{{1
 # Experimental unimpaired toggle between tab/spaces in file
 # ISSUES: 
 # - leaves mixed tabs/spaces if 5 spaces and tabstop is 2 (1 extra space)
