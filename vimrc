@@ -1,6 +1,4 @@
 vim9script
-import "./plugin/viking.vim" as viking
-import autoload "fuzzy.vim"
 
 # Options {{{1
 filetype plugin indent on
@@ -72,17 +70,6 @@ g:ale_linters = { 'markdown': ['vale', 'cspell', 'markdownlintcli2'], 'sh': ['sh
 'yaml': ['yamllint'],
 }
 
-# https://github.com/christoomey/vim-tmux-navigator {{{2
-g:tmux_navigator_no_mappings = 1
-if !viking.UsingGUIVim()
-	# these require modifyOtherKeys mode being on, :h map-alt-keys as well
-	nnoremap <silent> h <C-\><C-n><cmd>TmuxNavigateLeft<CR>
-	nnoremap <silent> j <C-\><C-n><cmd>TmuxNavigateDown<CR>
-	nnoremap <silent> k <C-\><C-n><cmd>TmuxNavigateUp<CR>
-	nnoremap <silent> l <C-\><C-n><cmd>TmuxNavigateRight<CR>
-endif
-
-
 # https://github.com/romainl/vim-qf {{{2
 g:qf_mapping_ack_style = 1
 g:qf_auto_quit = 1
@@ -100,8 +87,6 @@ nnoremap <Leader>gb <cmd>Git blame<CR>
 xnoremap <Leader>gb :Git blame<CR>
 
 # https://github.com/junegunn/fzf.vim {{{2
-g:fzf_buffers_jump = 1
-g:fzf_preview_window = ['right:50%:hidden', 'ctrl-l']
 nnoremap <Leader>e <Cmd>GFiles<CR>
 nnoremap <Leader>F <Cmd>Files<CR>
 nnoremap <Leader>b <Cmd>Buffers<CR>
@@ -119,24 +104,6 @@ g:fzf_action = {
 	'ctrl-x': 'split',
 	'ctrl-v': 'vsplit'
 }
-g:fzf_colors = {
-	'fg': ['fg', 'Normal'],
-	'bg': ['bg', 'Normal'],
-	'hl': ['fg', 'Comment'],
-	'fg+': ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-	'bg+': ['bg', 'CursorLine', 'CursorColumn'],
-	'hl+': ['fg', 'Statement'],
-	'info': ['fg', 'PreProc'],
-	'border': ['fg', 'Ignore'],
-	'prompt': ['fg', 'Conditional'],
-	'pointer': ['fg', 'Exception'],
-	'marker': ['fg', 'Keyword'],
-	'spinner': ['fg', 'Label'],
-	'header': ['fg', 'Comment'],
-	'preview-fg': ['fg', 'Normal'],
-	'preview-bg': ['bg', 'Normal']
-}
-
 # Colors {{{1
 augroup Vimrc
 	autocmd!
@@ -145,6 +112,10 @@ augroup Vimrc
 		highlight! link markdownUrl htmlLink
 		# underline here is odd because you can't click on it
 		highlight! link markdownLinkText String
+		# using orange fg w/underline bc I link ALEWarning to it
+		highlight! SpellRare term=standout cterm=underline ctermfg=173 guifg=#d7875f gui=undercurl
+		highlight! link ALEError SpellBad
+		highlight! link ALEWarning SpellRare
 	}
 augroup END
 
@@ -157,10 +128,6 @@ nnoremap <Leader>v :noautocmd vimgrep /\v/gj **/*<S-Left><S-Left><Right><Right><
 nnoremap <Leader>! :Redir<Space>
 nnoremap <Leader>y <cmd>%y +<CR>
 nnoremap <Leader><Leader> <Cmd>buffer #<CR>
-
-command! -nargs=? -complete=shellcmd Terminal terminal ++close <q-args>
-nnoremap <leader>3 :terminal<space>
-nnoremap <leader>4 :Terminal<space>
 
 cnoremap <expr> %. getcmdtype() == ':' ? expand('%:h') .. '/' : '%.'
 cnoremap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
@@ -178,26 +145,23 @@ nnoremap gl <Cmd>diffget //3<CR>
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
 
-# scroll other window
-nnoremap <M-J> <C-w>p<C-d><C-w>p
-nnoremap <M-K> <C-w>p<C-u><C-w>p
-nnoremap <silent> <M-h> <C-\><C-n><C-w>h<CR>
-nnoremap <silent> <M-j> <C-\><C-n><C-w>j<CR>
-nnoremap <silent> <M-k> <C-\><C-n><C-w>k<CR>
-nnoremap <silent> <M-l> <C-\><C-n><C-w>l<CR>
-tnoremap <silent> <M-h> <C-\><C-n><C-w>h<CR>
-tnoremap <silent> <M-j> <C-\><C-n><C-w>j<CR>
-tnoremap <silent> <M-k> <C-\><C-n><C-w>k<CR>
-tnoremap <silent> <M-l> <C-\><C-n><C-w>l<CR>
-
 # Workshop {{{1
-# Experimental unimpaired toggle between tab/spaces in file
 # ISSUES: 
 # - leaves mixed tabs/spaces if 5 spaces and tabstop is 2 (1 extra space)
-# - if there's two spaces in between text (not at beginning of line),
-#   it replaces it with a tab character there too. See warning in :h
-#   retab-example
+# - 2+ spaces in strings is replaced with tab!
 nnoremap yo<Tab> <Cmd>%retab!<CR>
+
+autocmd! Vimrc BufEnter * if &buftype == 'terminal' | normal! i | endif
+
+# these require modifyOtherKeys mode being on, :h map-alt-keys as well
+nnoremap <silent> h <C-w>h
+nnoremap <silent> j <C-w>j
+nnoremap <silent> k <C-w>k
+nnoremap <silent> l <C-w>l
+tnoremap <silent> h <C-w><C-n><C-w>h
+tnoremap <silent> j <C-\><C-n><C-w>j
+tnoremap <silent> k <C-\><C-n><C-w>k
+tnoremap <silent> l <C-\><C-n><C-w>l
 
 # }}}
 
@@ -207,10 +171,9 @@ nnoremap yo<Tab> <Cmd>%retab!<CR>
 # TODO: add '`' to matchit pairs in markdown files
 # TODO: investigate using :Git difftool -y develop for pr review!
 # TODO: combine these to use just leader-f and fallback to Files w no git repo
-# TODO: on termwinenter? binding to auto enter insert mode - least suprise
 # TODO: use <C-M-hjkl> in all modes to resize borders
 # TODO: send selected term bindings from habamax
 # TODO: for markdown files in my work directory using {% comment %} for gcc
-# TODO: fzf, turn on the C-n,C-p for history
+# TODO: fzf, turn on the C-n,C-p for history, and replace fzf.vim with custom
 
 # vi: fdm=marker:nowrap:ft=vim:fdl=0:nolist

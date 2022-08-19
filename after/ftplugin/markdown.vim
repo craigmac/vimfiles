@@ -3,6 +3,8 @@ setlocal suffixesadd=.md
 setlocal list
 setlocal expandtab
 
+setlocal commentstring={%\ comment\ %}\ %s\ {%\ endcomment\ %}
+
 inoreabbrev <buffer> dd@ [DD-](https://jira.dp.hbo.com/browse/DD-)
 
 " MATCHES:
