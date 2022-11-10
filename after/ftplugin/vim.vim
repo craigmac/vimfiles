@@ -1,14 +1,19 @@
+" reminder: b:did_ftplugin value is ignored for after/* no need to set for
+" personal vim/after/ftplugin/*.vim files
+
 setlocal noexpandtab
 setlocal shiftwidth=2
-setlocal softtabstop=-1 | " use same value of shiftwidth
+setlocal softtabstop=-1
 setlocal tabstop=2
 setlocal textwidth=80
 setlocal foldmethod=indent
-" create 1 fold inside a function/endfunction, no more
 setlocal foldnestmax=1
-setlocal foldlevel=0
 setlocal suffixesadd=.vim
 
-compiler vint
-
 let &l:define = '\C^command\|^function\|^def'
+
+if exists("b:undo_ftplugin")
+  let b:undo_ftplugin ..= " | setl et< sw< sts< ts< fdm< fdn< sua<"
+else
+  let b:undo_ftplugin = "setl et< sw< sts< ts< fdm< fdn< sua<"
+endif

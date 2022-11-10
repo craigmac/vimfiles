@@ -12,7 +12,7 @@ inoreabbrev <buffer> dd@ [DD-](https://jira.dp.hbo.com/browse/DD-)
 " 2. ({{ page.version }}/rn/develop/focus-management/#why-we-need-focus)
 " 3. (../linux/)
 setlocal include={{\\s*page.version\\s*}}\\zs\\/[^\\.\\)]\\+\\\|\\.\\.\\zs\\/[^\\.\\)]\\+
-" equivalent to search pattern :/{{\s*page.version\s*}}\zs\/[^\.\)]\+\|\.\.\zs\/[^\.\)]\+
+" equivalent to search pattern /{{\s*page.version\s*}}\zs\/[^\.\)]\+\|\.\.\zs\/[^\.\)]\+
 
 setlocal foldmethod=expr
 setlocal foldexpr=MarkdownFolding(v:lnum)
@@ -34,15 +34,5 @@ function! MarkdownFolding(lnum) abort
 		endif
 	endfor
 	return '='
-endfunction
-
-" Select a make target and then pass that to vim-dispatch
-nnoremap <buffer> <Leader>m :TermMake <C-z><C-p>
-command! -nargs=* -complete=customlist,<SID>MakeOptions TermMake :terminal make <q-args>
-
-function! s:MakeOptions(ArgLead, CmdLine, CursorPost) abort
-  " :h :command-completion-custom
-	" TODO: hardcoded, maybe add parser to make this generic for any make-based build system.
-	return ['hbo', 'next', 'nextonly', 'nextnextonly', 'production', 'sky', 'playstation']
 endfunction
 

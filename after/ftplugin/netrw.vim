@@ -1,7 +1,3 @@
-" My settings for netrw buffers
-" use :NetrwSettings to see all current settings available to set and their
-" values
-
 " turn off banner
 let g:netrw_banner=0
 " show hidden files

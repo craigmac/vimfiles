@@ -1,4 +1,12 @@
-" GUI specific settings for Vim 8+
+" GUI specific settings for Vim 9+ 
+
+" macvim opt key sends stupid ê for <M-j>, so just forward them to <M-{hjkl>
+" CAUTION: turning these on with MacVim breaks 'set macmeta', so keep them off
+" if using MacVim and let the macmeta setting handle the conversion. " map è <M-h>
+" map ê <M-j>
+" map ë <M-k>
+" map ì <M-l>
+
 
 " Turn off alt-{key} being used for menus allowing bindings on alt in GUI
 " If you want to bind Alt-key for a menu use e.g., :simalt f<CR> for Alt-f
@@ -26,34 +34,30 @@ set guioptions-=L
 set guioptions-=b
 set guioptions-=e
 
-" mimicing some of tmux functionality
-" <C-Space> works in GUI, for term it's usually <Nul> or ^@ 
-nnoremap <C-Space>s <cmd>terminal<CR>
-nnoremap <C-Space>v <cmd>vert terminal<CR>
-nnoremap <C-Space>t <cmd>tabnew <Bar> terminal ++curwin<CR>
-tnoremap <C-Space>s <cmd>terminal<CR>
-tnoremap <C-Space>v <cmd>vert terminal<CR>
-
 " ==============
 " :h gui_mac.txt
 " ==============
 
 " 'gui_macvim' is not standard it's defined by macvim, gui_mac is detected as 0 
 if has('gui_macvim') && has('gui_running')
-	set lines=59
-	set columns=239
+	" don't use macvim gui label, use default vim settting
+	set guitablabel=
+	" turn off macOS things
+	let macvim_hig_shift_movement = 0
+	let macvim_skip_cmd_opt_movement = 1
+	colorscheme macvim
 	set tabpagemax=100
 	call chdir(fnameescape(expand("~/.vim")))
-  nnoremap <F12> :set fullscreen!<CR>
-  set macmeta
+	nnoremap <F12> :set fullscreen!<CR>
+	" <C-v> <M-h> will still print 'è', but MacVim will convert it to <M-h>, so
+	" you can bind to <M-..> keystrokes without having to bind weird chars
+	set macmeta
 	set macthinstrokes
 	" when using vim ft things like !=# get mangled
 	set nomacligatures
-	" use this if using zsh to get OSC escape codes to use with 'autoshelldir'
+	" use if using zsh to get OSC escape codes to use with 'autoshelldir'
 	" https://apple.stackexchange.com/questions/139807/what-does-update-terminal-cwd-do-in-the-terminal-of-os-x
 	" Will also work with Bash but I just copied it to my .bashrc to be portable
-	" let $TERM_PROGRAM='Apple_Terminal'
-	
-	set shell=/usr/local/bin/bash -l
+	let $TERM_PROGRAM='Apple_Terminal'
 	set autoshelldir
 endif
