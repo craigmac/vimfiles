@@ -1,8 +1,6 @@
 " https://github.com/junegunn/fzf.vim
 
-if !g:loaded_fzf_vim
-  finish
-endif
+if !get(g:, 'loaded_fzf') | finish | endif
 
 let g:fzf_layout = { 'down': '30%' }
 let g:fzf_colors =

@@ -5,7 +5,7 @@ if !get(g:, 'loaded_tmux_navigator') | finish | endif
 " on macOS with Alacritty Meta keys with Vim (not Neovim)
 " they are received by Vim as escape sequences like j for <M-j>
 if has('mac') && !has('nvim')
-	echomsg 'Loaded macOS maps for Alt/Meta'
+	" echomsg 'Loaded macOS maps for Alt/Meta'
 	nmap h <M-h>
 	nmap j <M-j>
 	nmap k <M-k>

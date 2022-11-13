@@ -1,5 +1,4 @@
 " vi:fdm=marker:nowrap:ft=vim:fdl=99:noet:tw=80
-" git clone https://github.com/k-takata/minpac.git ~/.vim/pack/minpac/opt/minpac
 " Options {{{
 filetype plugin indent on
 syntax on
@@ -47,26 +46,24 @@ packadd! matchit
 " }}}
 
 " Packages {{{
-packadd! ale
-packadd! asyncrun.vim
-packadd! asynctasks.vim
-packadd! fzf
-packadd! fzf.vim
+packadd vim-markdown
 packadd! vim-commentary
-packadd! vim-cool
-packadd! vim-endwise
-packadd! vim-eunuch
-packadd! vim-fugitive
-packadd! vim-qf
-packadd  vim-markdown
 packadd! vim-repeat
-packadd! vim-rhubarb
-packadd! vim-scriptease
 packadd! vim-sensible
 packadd! vim-sleuth
-packadd! vim-surround
 packadd! vim-unimpaired
-packadd! vim-tmux-navigator
+packadd! asyncrun.vim
+packadd! asynctasks.vim
+packadd! vim-endwise
+packadd! vim-fugitive
+packadd! vim-rhubarb
+packadd! vim-eunuch
+packadd! vim-scriptease
+packadd! ale
+packadd! fzf
+packadd! fzf.vim
+packadd! vim-cool
+packadd! vim-qf
 " }}}
 
 " Mappings {{{
@@ -107,12 +104,11 @@ nnoremap ' `
 " make I/A work on visual selections too
 xnoremap <expr> I (mode()=~#'[vV]'?'<C-v>0oI':'I')
 xnoremap <expr> A (mode()=~#'[vV]'?'<C-v>0o$A ':'A')
+nnoremap <C-l> :<C-u>nohlsearch<Bar>diffupdate<Bar>normal! <C-l><CR>
 " }}}
 
 " Colors {{{
-colorscheme mine
-" BUGFIX: keep after 'colorscheme' in case of wrong detection
-set background=dark
+colorscheme habamax
 " }}}
 
 " Autocmds {{{

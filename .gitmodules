@@ -1,0 +1,57 @@
+[submodule "pack/git/opt/vim-commentary"]
+	path = pack/git/opt/vim-commentary
+	url = https://github.com/tpope/vim-commentary
+[submodule "pack/git/opt/vim-endwise"]
+	path = pack/git/opt/vim-endwise
+	url = https://github.com/tpope/vim-endwise
+[submodule "pack/git/opt/vim-eunuch"]
+	path = pack/git/opt/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch
+[submodule "pack/git/opt/vim-fugitive"]
+	path = pack/git/opt/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/git/opt/vim-rhubarb"]
+	path = pack/git/opt/vim-rhubarb
+	url = https://github.com/tpope/vim-rhubarb
+[submodule "pack/git/opt/vim-markdown"]
+	path = pack/git/opt/vim-markdown
+	url = https://github.com/tpope/vim-markdown
+[submodule "pack/git/opt/vim-repeat"]
+	path = pack/git/opt/vim-repeat
+	url = https://github.com/tpope/vim-repeat
+[submodule "pack/git/opt/vim-sensible"]
+	path = pack/git/opt/vim-sensible
+	url = https://github.com/tpope/vim-sensible
+[submodule "pack/git/opt/vim-sleuth"]
+	path = pack/git/opt/vim-sleuth
+	url = https://github.com/tpope/vim-sleuth
+[submodule "pack/git/opt/vim-unimpaired"]
+	path = pack/git/opt/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired
+[submodule "pack/git/opt/ale"]
+	path = pack/git/opt/ale
+	url = https://github.com/w0rp/ale
+[submodule "pack/git/opt/asyncrun.vim"]
+	path = pack/git/opt/asyncrun.vim
+	url = https://github.com/skywin3000/asyncrun.vim
+[submodule "pack/git/opt/asynctasks.vim"]
+	path = pack/git/opt/asynctasks.vim
+	url = https://github.com/skywin3000/asynctasks.vim
+[submodule "pack/git/opt/fzf"]
+	path = pack/git/opt/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "pack/git/opt/fzf.vim"]
+	path = pack/git/opt/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+[submodule "pack/git/opt/vim-cool"]
+	path = pack/git/opt/vim-cool
+	url = https://github.com/romainl/vim-cool
+[submodule "pack/git/opt/vim-qf"]
+	path = pack/git/opt/vim-qf
+	url = https://github.com/romainl/vim-qf
+[submodule "pack/git/opt/vim-tmux-navigator"]
+	path = pack/git/opt/vim-tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "pack/git/opt/youcompleteme"]
+	path = pack/git/opt/youcompleteme
+	url = https://github.com/ycm-core/youcompleteme
