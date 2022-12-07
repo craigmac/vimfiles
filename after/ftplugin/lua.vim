@@ -1,8 +1,9 @@
-setlocal noexpandtab
+setlocal expandtab
 setlocal shiftwidth=2
-setlocal tabstop=2
-setlocal softtabstop=-1
 setlocal textwidth=100
+setlocal nolist
+
+command! Stylua <Cmd>silent! write !'stylua --search-parent-directories' %<CR>
 
 " turn '.' into '/'
 setlocal includeexpr=substitute(v:fname,'\\.','/','g')
@@ -17,9 +18,9 @@ let &l:suffixesadd .= "," .. v:fname .. "/init.lua"
 " TODO: write. better K support by expanding help search on something
 " like vim.api.nvim_... with cursor over 'n' in 'nvim_..' won't work
 "function! s:MyLuaK() abort
-	" K has to remain neutral in upstream, but if you're only using lua
-	" for configuring neovim, we can do much better than just trying to call
-	" 'man <word>'.
+  " K has to remain neutral in upstream, but if you're only using lua
+  " for configuring neovim, we can do much better than just trying to call
+  " 'man <word>'.
 "endfunction
 
 "function! s:MyLuaGF() abort
@@ -30,8 +31,8 @@ let &l:suffixesadd .= "," .. v:fname .. "/init.lua"
 "endfunction
 
 if exists("b:undo_ftplugin")
-	let b:undo_ftplugin ..= " | setl et< sw< sts< ts< tw<"
+  let b:undo_ftplugin ..= " | setl et< sw< sts< ts< tw<"
 else
-	let b:undo_ftplugin = "setl et< sw< sts< ts< tw<"
+  let b:undo_ftplugin = "setl et< sw< sts< ts< tw<"
 endif
 

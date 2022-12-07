@@ -1,4 +1,5 @@
-" vi:fdm=marker:nowrap:ft=vim:fdl=99:noet:tw=80
+" vimrc for vim HEAD, use vim -u vimrc-minimal for others
+
 " Options {{{
 filetype plugin indent on
 syntax on
@@ -7,116 +8,143 @@ let g:mapleader = ' '
 set autoindent smartindent
 set autoread autoshelldir
 set backspace=indent,eol,start
-set belloff=all
-set complete-=i completeopt=menuone,popup
+set belloff=all complete-=i completeopt=menuone,popup
 set diffopt+=algorithm:patience,vertical
 set exrc secure
 set foldopen+=jump
 set formatoptions+=j
-set grepprg=grep\ -HnriE\ $*
+set grepprg=git\ grep\ --untracked\ -In\ $*
 set hidden autowrite
 set history=10000
 set hlsearch incsearch
 set smartcase
 set laststatus=2
-set linebreak breakindent showbreak=+
-set listchars=tab:\│\ ,lead:·,trail:▓,eol:↲,precedes:«,extends:»
+set linebreak breakindent showbreak="↪"
+set listchars=tab:\│\ ,lead:·,trail:▓,eol:¬,precedes:«,extends:»
 set modeline modelines=5
 set mouse=nvi
 set noswapfile
 if has('mac') | set path-=/usr/include | endif
+set pumheight=10
 set ruler
 set scrolloff=1 sidescrolloff=2
 set sessionoptions-=options
 set shortmess-=cS
-set showcmd showmatch
+set showcmd
 set splitbelow splitright
-" TODO find patch num for this one
-" if has("patch-9.0.") | set splitkeep=screen | endif
-set statusline=%<%f\ %h%m%r%=%P
+set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
 set tags=./tags;,tags;
-" set ttimeout ttimeoutlen=100
-let g:omni_syntax_group_include_vim = 'lua\w\+'
-let g:vim_indent_cont = shiftwidth()
-set undofile undodir=~/.vim/undodir
-set viewoptions-=options
+set wildcharm=<C-z>
 set wildmenu wildoptions=fuzzy,pum,tagfile
-packadd! matchit
-
 " }}}
 
 " Packages {{{
+packadd! matchit
+
 packadd vim-markdown
-packadd! vim-commentary
-packadd! vim-repeat
 packadd! vim-sensible
-packadd! vim-sleuth
+packadd! vim-commentary
 packadd! vim-unimpaired
-packadd! asyncrun.vim
-packadd! asynctasks.vim
-packadd! vim-endwise
-packadd! vim-fugitive
-packadd! vim-rhubarb
-packadd! vim-eunuch
-packadd! vim-scriptease
-packadd! ale
-packadd! fzf
-packadd! fzf.vim
+packadd! vim-surround
+packadd! vim-repeat
 packadd! vim-cool
 packadd! vim-qf
+packadd! ale
+packadd! lsp
+
+" local
+packadd! helptoc
+
 " }}}
 
 " Mappings {{{
-nnoremap <Leader>/ :grep! // **/*.<S-Left><Left><Left>
-nnoremap <Leader>! :Redir<Space>
-nnoremap <Leader>y "+y
-xnoremap <Leader>y "+y
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-nnoremap <Leader><Leader> <Cmd>buffer "<CR>
-cnoremap <expr> %. getcmdtype() == ':' ? expand('%:h') .. '/' : '%.'
-cnoremap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
-cnoremap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
-nnoremap <Leader>* :grep! <cword> **/*
-nnoremap <Leader>w <Cmd>update<CR>
-nnoremap <Leader>, <Cmd>edit $MYVIMRC<CR>
-nnoremap <Leader>ft :e <C-R>=expand('~/.vim/after/ftplugin/' .. &ft .. '.vim')<CR><CR>
-nnoremap <Leader><CR> <Cmd>source %<CR> <bar> <Cmd>nohlsearch<CR>
+nmap <Leader>ee :<C-u>edit <C-z><S-Tab>
+nmap <Leader>es :<C-u>split <C-z><S-Tab>
+nmap <Leader>ev :<C-u>vert split <C-z><S-Tab>
+nmap <Leader>e. :<C-u>edit %.<C-z><S-Tab>
+nmap <Leader>ff :<C-u>find **/*
+nmap <Leader>fs :<C-u>sfind **/*
+nmap <Leader>fv :<C-u>vertical sfind **/*
+nmap <Leader>aa :<C-u>argadd **/*
+nmap <Leader>bb :<C-u>buffer <C-z><S-Tab>
+nmap <Leader>bs :<C-u>sbuffer <C-z><S-Tab>
+nmap <Leader>bv :<C-u>vertical sbuffer <C-z><S-Tab>
+
+nnoremap <Leader>/ :silent grep! <Bar>redraw!<S-Left>
+nmap g> :<C-U>Redir<Space>
+nmap <Leader>y "+y
+xmap <Leader>y "+y
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+nmap <Leader><Leader> <Cmd>buffer "<CR>
+cmap <expr> %. getcmdtype() == ':' ? expand('%:h') .. '/' : '%.'
+cmap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
+cmap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
+nmap <Leader>* <Cmd>silent grep! <cword> <Bar>redraw!<CR>
+nmap <Leader>w <Cmd>update<CR>
+nmap <Leader>, <Cmd>edit $MYVIMRC<CR>
+nmap <Leader>ft :e <C-R>=expand('~/.vim/after/ftplugin/' .. &ft .. '.vim')<CR><CR>
+nmap <Leader><CR> <Cmd>source %<CR> <bar> <Cmd>nohlsearch<CR>
 xnoremap < <gv
 xnoremap > >gv
-nnoremap gh <Cmd>diffget //2<CR>
-nnoremap gl <Cmd>diffget //3<CR>
+nmap zS <Cmd>echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
+nmap gh <Cmd>diffget //2<CR>
+nmap gl <Cmd>diffget //3<CR>
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
 " allows vim-repeat too: ysiw' then vertical block select and . works
-xnoremap . :normal .<CR>
-tnoremap <Esc> <C-\><C-n>
+xnoremap . <Cmd>normal .<CR>
+tmap <Esc> <C-\><C-n>
 tnoremap <C-v><Esc> <Esc>
-inoremap <C-Space> <C-x><C-o>
-nnoremap <expr> z= ':<C-u>setlocal spell<CR>'..v:count..'z='
 inoremap {<CR> {<CR>}<C-o>O
 inoremap {,<CR> {<CR>},<C-o>O
 inoremap (<CR> (<CR>)<C-o>O
 inoremap (,<CR> (<CR>),<C-o>O
 inoremap [<CR> [<CR>]<C-o>O
 inoremap [,<CR> [<CR>],<C-o>O
-nnoremap ' `
-" make I/A work on visual selections too
-xnoremap <expr> I (mode()=~#'[vV]'?'<C-v>0oI':'I')
-xnoremap <expr> A (mode()=~#'[vV]'?'<C-v>0o$A ':'A')
-nnoremap <C-l> :<C-u>nohlsearch<Bar>diffupdate<Bar>normal! <C-l><CR>
+nmap ' `
+" prepend/append visual selections with I and A
+xnoremap <expr> I (mode() =~# '[vV]' ? '<C-v>0oI' : 'I')  
+xnoremap <expr> A (mode() =~# '[vV]' ? '<C-v>0o$A ' : 'A') 
+nmap <C-l> <Cmd>nohlsearch<Bar>diffupdate<CR>
+
+nmap <M-h> <C-\><C-n><C-w>h
+nmap <M-j> <C-\><C-n><C-w>j
+nmap <M-k> <C-\><C-n><C-w>k
+nmap <M-l> <C-\><C-n><C-w>l
+tmap <M-h> <C-\><C-n><C-w>h
+tmap <M-j> <C-\><C-n><C-w>j
+tmap <M-k> <C-\><C-n><C-w>k
+tmap <M-l> <C-\><C-n><C-w>l
+
+" terminal management - <C-Space> more widely supported as <Nul> or ^@
+nmap <C-Space>s <Cmd>terminal<CR>
+nmap <C-Space>v <Cmd>vertical terminal<CR>
+tmap <C-Space>s <Cmd>terminal<CR>
+tmap <C-Space>v <Cmd>vertical terminal<CR>
+
+" tig
+nmap <Leader>gs <Cmd>vertical terminal ++close tig status<CR>
+nmap <Leader>gb <Cmd>vertical terminal ++close tig blame %<CR>
+nmap <Leader>gl <Cmd>vertical terminal ++close tig log %<CR>
+nmap <Leader>gm <Cmd>vertical terminal ++close tig<CR>
+
+" ctags
+nmap <Leader>tt <Cmd>tjump <C-r><C-w><CR>
+nmap <Leader>ts <Cmd>stjump <C-r><C-w><CR>
+nmap <Leader>tp <Cmd>ptag <C-r><C-w><CR>
 " }}}
 
 " Colors {{{
-colorscheme habamax
+set termguicolors
+" set background=light
+if &termguicolors | colorscheme neo-defaults | endif
 " }}}
 
 " Autocmds {{{
-augroup MyInit
-  autocmd!
-  au FileType * if &ofu == "" | setl ofu=syntaxcomplete#Complete | endif
+augroup MyInit | au! 
+  autocmd! BufEnter * if &bt ==# 'terminal' | norm! a | endif
 augroup END
-
 " }}}
 
 " Commands {{{
@@ -127,3 +155,7 @@ command! Squeeze %s/\v(\n\n)\n+/\1/e
 command! GitPRFiles cexpr! systemlist('git pr-files | grep md$')
 " }}}
 
+" Shed {{{
+
+" }}}
+" vi:fdm=marker:nowrap:ft=vim:fdl=99:noet:tw=80:nolist

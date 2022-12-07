@@ -31,12 +31,6 @@
 [submodule "pack/git/opt/ale"]
 	path = pack/git/opt/ale
 	url = https://github.com/w0rp/ale
-[submodule "pack/git/opt/asyncrun.vim"]
-	path = pack/git/opt/asyncrun.vim
-	url = https://github.com/skywin3000/asyncrun.vim
-[submodule "pack/git/opt/asynctasks.vim"]
-	path = pack/git/opt/asynctasks.vim
-	url = https://github.com/skywin3000/asynctasks.vim
 [submodule "pack/git/opt/fzf"]
 	path = pack/git/opt/fzf
 	url = https://github.com/junegunn/fzf
@@ -49,9 +43,9 @@
 [submodule "pack/git/opt/vim-qf"]
 	path = pack/git/opt/vim-qf
 	url = https://github.com/romainl/vim-qf
-[submodule "pack/git/opt/vim-tmux-navigator"]
-	path = pack/git/opt/vim-tmux-navigator
-	url = https://github.com/christoomey/vim-tmux-navigator
-[submodule "pack/git/opt/youcompleteme"]
-	path = pack/git/opt/youcompleteme
-	url = https://github.com/ycm-core/youcompleteme
+[submodule "pack/git/opt/vim-surround"]
+	path = pack/git/opt/vim-surround
+	url = https://github.com/tpope/vim-surround
+[submodule "pack/git/opt/lsp"]
+	path = pack/git/opt/lsp
+	url = https://github.com/yegappan/lsp

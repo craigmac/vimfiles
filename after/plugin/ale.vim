@@ -14,7 +14,22 @@ let g:ale_hover_cursor = 0
 nnoremap <silent> ]d :execute "normal \<Plug>(ale_next)" <Bar> ALEDetail<CR>
 nnoremap <silent> [d :execute "normal \<Plug>(ale_previous)" <Bar> ALEDetail<CR>
 let g:ale_linters_explicit = 1
+
+" This is what I was using before ability to redefine
+" g:ale_markdown_markdownlint_executable existed. The linter
+" was defined in after/ale_linters/markdown/markdownlintcli2.vim as:
+" call ale#linter#Define('markdown', {
+" \   'name': 'markdownlintcli2',
+" \   'executable': 'markdownlint-cli2',
+" \   'lint_file': 1,
+" \   'output_stream': 'stderr',
+" \   'command': '%e %s',
+" \   'callback': 'ale#handlers#markdownlint#Handle'
+" \})
+"
+" \ 'markdown': ['vale', 'cspell', 'markdownlintcli2'], 
+let g:ale_markdown_markdownlint_executable = 'markdownlint-cli2'
 let g:ale_linters = { 
-	\ 'markdown': ['vale', 'cspell', 'markdownlintcli2'], 
-	\ 'sh': ['shellcheck'], 'yaml': ['yamllint'],
+  \ 'markdown': ['vale', 'cspell', 'markdownlint'], 
+  \ 'sh': ['shellcheck'], 'yaml': ['yamllint'],
 \}

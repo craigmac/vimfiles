@@ -3,7 +3,11 @@
 " only run this file fugitive is loaded
 if !get(g:, 'loaded_fugitive') | finish | endif
 
-set statusline=%{FugitiveStatusline()}%=%<%f\ %h%m%r%=%l,%L\ %P
+if has('nvim')
+	set statusline=%{FugitiveStatusline()}%=%<%f\ %h%m%r%=%l,%L\ %P
+else
+	set statusline=%{FugitiveStatusline()}%=%<%f\ %h%m%r%=%l,%L\ %P
+endif
 autocmd! MyInit BufReadPost fugitive://* setlocal bufhidden=delete
 
 " git/fugitive general interface
