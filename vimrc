@@ -36,6 +36,8 @@ set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
 set tags=./tags;,tags;
 set wildcharm=<C-z>
 set wildmenu wildoptions=fuzzy,pum,tagfile
+
+if $TERM == 'alacritty' | set ttymouse=sgr | endif
 " }}}
 
 " Packages {{{
@@ -50,11 +52,7 @@ packadd! vim-repeat
 packadd! vim-cool
 packadd! vim-qf
 packadd! ale
-packadd! lsp
-
-" local
-packadd! helptoc
-
+" packadd! lsp
 " }}}
 
 " Mappings {{{
@@ -116,29 +114,11 @@ tmap <M-h> <C-\><C-n><C-w>h
 tmap <M-j> <C-\><C-n><C-w>j
 tmap <M-k> <C-\><C-n><C-w>k
 tmap <M-l> <C-\><C-n><C-w>l
-
-" terminal management - <C-Space> more widely supported as <Nul> or ^@
-nmap <C-Space>s <Cmd>terminal<CR>
-nmap <C-Space>v <Cmd>vertical terminal<CR>
-tmap <C-Space>s <Cmd>terminal<CR>
-tmap <C-Space>v <Cmd>vertical terminal<CR>
-
-" tig
-nmap <Leader>gs <Cmd>vertical terminal ++close tig status<CR>
-nmap <Leader>gb <Cmd>vertical terminal ++close tig blame %<CR>
-nmap <Leader>gl <Cmd>vertical terminal ++close tig log %<CR>
-nmap <Leader>gm <Cmd>vertical terminal ++close tig<CR>
-
-" ctags
-nmap <Leader>tt <Cmd>tjump <C-r><C-w><CR>
-nmap <Leader>ts <Cmd>stjump <C-r><C-w><CR>
-nmap <Leader>tp <Cmd>ptag <C-r><C-w><CR>
 " }}}
 
 " Colors {{{
 set termguicolors
-" set background=light
-if &termguicolors | colorscheme neo-defaults | endif
+colorscheme dracula
 " }}}
 
 " Autocmds {{{

@@ -34,7 +34,6 @@ highlight! SpellBad cterm=undercurl ctermbg=NONE ctermul=1 gui=undercurl guisp=R
 highlight! SpellCap cterm=undercurl ctermul=4 gui=undercurl guisp=Blue guibg=NONE ctermbg=NONE
 highlight! SpellRare cterm=undercurl ctermbg=NONE ctermul=5 gui=undercurl guisp=Magenta
 highlight! SpellLocal cterm=undercurl ctermbg=NONE ctermul=6 gui=undercurl guisp=Cyan
-highlight! TabLine cterm=reverse gui=reverse 
 
 highlight! link CurSearch IncSearch
 highlight! NonText gui=NONE guifg=Cyan
