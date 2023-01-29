@@ -49,3 +49,6 @@
 [submodule "pack/git/opt/lsp"]
 	path = pack/git/opt/lsp
 	url = https://github.com/yegappan/lsp
+[submodule "pack/git/start/vim"]
+	path = pack/git/start/vim
+	url = https://github.com/dracula/vim
