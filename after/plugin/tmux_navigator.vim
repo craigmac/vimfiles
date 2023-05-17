@@ -2,33 +2,40 @@
 
 " only source this file is tmux navigator was loaded
 if !get(g:, 'loaded_tmux_navigator') | finish | endif
-" on macOS with Alacritty Meta keys with Vim (not Neovim)
-" they are received by Vim as escape sequences like j for <M-j>
-if has('mac') && !has('nvim')
-	" echomsg 'Loaded macOS maps for Alt/Meta'
-	nmap h <M-h>
-	nmap j <M-j>
-	nmap k <M-k>
-	nmap l <M-l>
-	imap h <M-h>
-	imap j <M-j>
-	imap k <M-k>
-	imap l <M-l>
-	tmap h <M-h>
-	tmap j <M-j>
-	tmap k <M-k>
-	tmap l <M-l>
-endif
 
-nnoremap <silent> <M-h> <cmd>TmuxNavigateLeft<CR>
-nnoremap <silent> <M-j> <cmd>TmuxNavigateDown<CR>
-nnoremap <silent> <M-k> <cmd>TmuxNavigateUp<CR>
-nnoremap <silent> <M-l> <cmd>TmuxNavigateRight<CR>
-inoremap <silent> <M-h> <cmd>TmuxNavigateLeft<CR>
-inoremap <silent> <M-j> <cmd>TmuxNavigateDown<CR>
-inoremap <silent> <M-k> <cmd>TmuxNavigateUp<CR>
-inoremap <silent> <M-l> <cmd>TmuxNavigateRight<CR>
-tnoremap <silent> <M-h> <cmd>TmuxNavigateLeft<CR>
-tnoremap <silent> <M-j> <cmd>TmuxNavigateDown<CR>
-tnoremap <silent> <M-k> <cmd>TmuxNavigateUp<CR>
-tnoremap <silent> <M-l> <cmd>TmuxNavigateRight<CR>
+
+if has('nvim')
+  " Neovim has the <M-..> variants available
+  noremap <silent> <M-h> <cmd>TmuxNavigateLeft<CR>
+  noremap <silent> <M-j> <cmd>TmuxNavigateDown<CR>
+  noremap <silent> <M-k> <cmd>TmuxNavigateUp<CR>
+  noremap <silent> <M-l> <cmd>TmuxNavigateRight<CR>
+  tnoremap <silent> <M-h> <cmd>TmuxNavigateLeft<CR>
+  tnoremap <silent> <M-j> <cmd>TmuxNavigateDown<CR>
+  tnoremap <silent> <M-k> <cmd>TmuxNavigateUp<CR>
+  tnoremap <silent> <M-l> <cmd>TmuxNavigateRight<CR>
+elseif &term =~# '\(xterm-kitty\|wezterm\)' && has('mac')
+  " Make <C-[> just another Esc to exit insert mode immediately,
+  " rather than wait ~1s for another key, and don't use ^[ in
+  " mappings.
+  map <nowait><C-[> <Esc>
+  noremap <silent> è <cmd>TmuxNavigateLeft<CR>
+  noremap <silent> ê <cmd>TmuxNavigateDown<CR>
+  noremap <silent> ë <cmd>TmuxNavigateUp<CR>
+  noremap <silent> ì <cmd>TmuxNavigateRight<CR>
+  tnoremap <silent> è <cmd>TmuxNavigateLeft<CR>
+  tnoremap <silent> ê <cmd>TmuxNavigateDown<CR>
+  tnoremap <silent> ë <cmd>TmuxNavigateUp<CR>
+  tnoremap <silent> ì <cmd>TmuxNavigateRight<CR>
+else
+  " fallback which may work ok with xterm-like on non-macos
+  " and tmux
+  noremap <silent> h <cmd>TmuxNavigateLeft<CR>
+  noremap <silent> j <cmd>TmuxNavigateDown<CR>
+  noremap <silent> k <cmd>TmuxNavigateUp<CR>
+  noremap <silent> l <cmd>TmuxNavigateRight<CR>
+  tnoremap <silent> h <cmd>TmuxNavigateLeft<CR>
+  tnoremap <silent> j <cmd>TmuxNavigateDown<CR>
+  tnoremap <silent> k <cmd>TmuxNavigateUp<CR>
+  tnoremap <silent> l <cmd>TmuxNavigateRight<CR>
+endif

@@ -14,7 +14,7 @@ nnoremap <buffer> dd :.Reject<CR>
 xnoremap <buffer> d :Reject<CR>
 
 if exists("b:undo_ftplugin")
-	let b:undo_ftplugin ..= " | setl nu< rnu< list< spell<"
+  let b:undo_ftplugin ..= " | setl nu< rnu< list< spell<"
 else
-	let b:undo_ftplugin = "setl nu< rnu< list< spell<"
+  let b:undo_ftplugin = "setl nu< rnu< list< spell<"
 endif

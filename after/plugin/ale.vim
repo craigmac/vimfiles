@@ -2,8 +2,8 @@
 
 if !get(g:, 'loaded_ale') | finish | endif
 
-let g:ale_set_signs = 0
-let g:ale_disable_lsp = 1
+let g:ale_set_signs = 1
+let g:ale_disable_lsp = 0
 let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰']
 let g:ale_set_highlights = 1
 let g:ale_echo_cursor = 0

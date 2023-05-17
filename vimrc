@@ -1,130 +1,52 @@
-" vimrc for vim HEAD, use vim -u vimrc-minimal for others
-
 " Options {{{
-filetype plugin indent on
-syntax on
-scriptencoding utf-8
-let g:mapleader = ' '
-set autoindent smartindent
-set autoread autoshelldir
-set backspace=indent,eol,start
-set belloff=all complete-=i completeopt=menuone,popup
-set diffopt+=algorithm:patience,vertical
-set exrc secure
-set foldopen+=jump
-set formatoptions+=j
+" ./plugin/neovim-defaults.vim loads too
+let g:mapleader = "\<Space>"
+set runtimepath+=~/src/personal/neo
+set completeopt=menu,menuone,popup,noselect,noinsert
 set grepprg=git\ grep\ --untracked\ -In\ $*
-set hidden autowrite
-set history=10000
-set hlsearch incsearch
+set guifont=Iosevka\ Fixed:h24
+set listchars=tab:→\ ,lead:·,trail:▓,eol:↲,precedes:«,extends:»
+set path-=/usr/include
+set showbreak=↪
+set signcolumn=yes
+set smartindent
 set smartcase
-set laststatus=2
-set linebreak breakindent showbreak="↪"
-set listchars=tab:\│\ ,lead:·,trail:▓,eol:¬,precedes:«,extends:»
-set modeline modelines=5
-set mouse=nvi
-set noswapfile
-if has('mac') | set path-=/usr/include | endif
-set pumheight=10
-set ruler
-set scrolloff=1 sidescrolloff=2
-set sessionoptions-=options
-set shortmess-=cS
-set showcmd
 set splitbelow splitright
-set statusline=%<%f%h%m%r%=%b\ 0x%B\ \ %l,%c%V\ %P
-set tags=./tags;,tags;
 set wildcharm=<C-z>
-set wildmenu wildoptions=fuzzy,pum,tagfile
+set wildoptions=fuzzy,pum,tagfile
 
-if $TERM == 'alacritty' | set ttymouse=sgr | endif
-" }}}
+"}}}
 
 " Packages {{{
-packadd! matchit
 
-packadd vim-markdown
-packadd! vim-sensible
-packadd! vim-commentary
-packadd! vim-unimpaired
-packadd! vim-surround
-packadd! vim-repeat
-packadd! vim-cool
-packadd! vim-qf
-packadd! ale
-" packadd! lsp
+" call minpac#add('yegappan/lsp')
 " }}}
 
 " Mappings {{{
-nmap <Leader>ee :<C-u>edit <C-z><S-Tab>
-nmap <Leader>es :<C-u>split <C-z><S-Tab>
-nmap <Leader>ev :<C-u>vert split <C-z><S-Tab>
-nmap <Leader>e. :<C-u>edit %.<C-z><S-Tab>
-nmap <Leader>ff :<C-u>find **/*
-nmap <Leader>fs :<C-u>sfind **/*
-nmap <Leader>fv :<C-u>vertical sfind **/*
-nmap <Leader>aa :<C-u>argadd **/*
-nmap <Leader>bb :<C-u>buffer <C-z><S-Tab>
-nmap <Leader>bs :<C-u>sbuffer <C-z><S-Tab>
-nmap <Leader>bv :<C-u>vertical sbuffer <C-z><S-Tab>
-
-nnoremap <Leader>/ :silent grep! <Bar>redraw!<S-Left>
-nmap g> :<C-U>Redir<Space>
-nmap <Leader>y "+y
-xmap <Leader>y "+y
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-nmap <Leader><Leader> <Cmd>buffer "<CR>
-cmap <expr> %. getcmdtype() == ':' ? expand('%:h') .. '/' : '%.'
-cmap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
-cmap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
-nmap <Leader>* <Cmd>silent grep! <cword> <Bar>redraw!<CR>
 nmap <Leader>w <Cmd>update<CR>
 nmap <Leader>, <Cmd>edit $MYVIMRC<CR>
 nmap <Leader>ft :e <C-R>=expand('~/.vim/after/ftplugin/' .. &ft .. '.vim')<CR><CR>
 nmap <Leader><CR> <Cmd>source %<CR> <bar> <Cmd>nohlsearch<CR>
-xnoremap < <gv
-xnoremap > >gv
 nmap zS <Cmd>echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
-nmap gh <Cmd>diffget //2<CR>
-nmap gl <Cmd>diffget //3<CR>
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
-" allows vim-repeat too: ysiw' then vertical block select and . works
-xnoremap . <Cmd>normal .<CR>
-tmap <Esc> <C-\><C-n>
-tnoremap <C-v><Esc> <Esc>
-inoremap {<CR> {<CR>}<C-o>O
-inoremap {,<CR> {<CR>},<C-o>O
-inoremap (<CR> (<CR>)<C-o>O
-inoremap (,<CR> (<CR>),<C-o>O
-inoremap [<CR> [<CR>]<C-o>O
-inoremap [,<CR> [<CR>],<C-o>O
+nmap g> :<C-U>Redir<Space>
 nmap ' `
-" prepend/append visual selections with I and A
-xnoremap <expr> I (mode() =~# '[vV]' ? '<C-v>0oI' : 'I')  
-xnoremap <expr> A (mode() =~# '[vV]' ? '<C-v>0o$A ' : 'A') 
-nmap <C-l> <Cmd>nohlsearch<Bar>diffupdate<CR>
 
-nmap <M-h> <C-\><C-n><C-w>h
-nmap <M-j> <C-\><C-n><C-w>j
-nmap <M-k> <C-\><C-n><C-w>k
-nmap <M-l> <C-\><C-n><C-w>l
-tmap <M-h> <C-\><C-n><C-w>h
-tmap <M-j> <C-\><C-n><C-w>j
-tmap <M-k> <C-\><C-n><C-w>k
-tmap <M-l> <C-\><C-n><C-w>l
+cmap <expr> %. getcmdtype() == ':' ? expand('%:h') .. '/' : '%.'
+cmap <expr> <C-n> wildmenumode() ? "<C-N>" : "<Down>"
+cmap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
+
+" }}}
+
+" Autocmds/Functions {{{
+augroup MyVimInit | autocmd!
+  autocmd! BufEnter * if &bt ==# 'terminal' | norm! a | endif
+augroup END
 " }}}
 
 " Colors {{{
-set termguicolors
-colorscheme dracula
-" }}}
-
-" Autocmds {{{
-augroup MyInit | au! 
-  autocmd! BufEnter * if &bt ==# 'terminal' | norm! a | endif
-augroup END
+colorscheme neo
 " }}}
 
 " Commands {{{
@@ -132,10 +54,47 @@ command! Cd tcd %:h
 command! Bonly .+,$bwipeout
 command! TodoLocal :botright silent! lvimgrep /\v\CTODO|FIXME|HACK|DEV/ %<CR>
 command! Squeeze %s/\v(\n\n)\n+/\1/e
-command! GitPRFiles cexpr! systemlist('git pr-files | grep md$')
 " }}}
 
-" Shed {{{
+" LSP {{{
+
+" def On_lsp_buffer_enabled()
+"   setlocal omnifunc=lsp#complete tagfunc=lsp#tagfunc
+"   # replace 'goto definition' binding
+"   nmap <buffer> gd <plug>(lsp-definition)
+"   # replaces 'goto global declaration' which is sorta the same
+"   nmap <buffer> gD <plug>(lsp-type-definition)
+"   # replaces 'goto sleep' bindings which are useless anyway
+"   nmap <buffer> gs <plug>(lsp-document-symbol-search)
+"   nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+"   # replaces 'search for word without word boundaries \< and \>' binding
+"   nmap <buffer> g*<plug>(lsp-references)
+"   # using I because gi replaces 'goto last insert' which I use
+"   nmap <buffer> gI <plug>(lsp-implementation)
+"   # replaces 'format like gq but keep cursor still' binding
+"   nmap <buffer> gw <plug>(lsp-rename)
+"   # replaces 'goto macro definition' mappingss
+"   nmap <buffer> [e <plug>(lsp-previous-diagnostic)
+"   nmap <buffer> ]e <plug>(lsp-next-diagnostic)
+"   nmap <buffer> K <plug>(lsp-hover)
+"   imap <buffer> <expr><C-f> lsp#scroll(+4)
+"   imap <buffer> <expr><C-b> lsp#scroll(-4)
+"   g:lsp_fold_enabled = 0
+"   g:lsp_format_sync_timeout = 1000
+"   g:lsp_diagnostics_enabled = 1
+"   # Highlight references to symbol under cursor like * was pressed in normal
+"   g:lsp_document_highlight_enabled = 1
+"   # TODO: semantic highlights with :h vim-lsp-semantic
+"     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+" enddef
+
+" augroup lsp_install | autocmd!
+"   # called only for languages with a server registered
+"   autocmd User lsp_buffer_enabled call On_lsp_buffer_enabled()
+" augroup END
 
 " }}}
+
+" TODO:
+ 
 " vi:fdm=marker:nowrap:ft=vim:fdl=99:noet:tw=80:nolist

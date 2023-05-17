@@ -4,11 +4,12 @@
 if !get(g:, 'loaded_fugitive') | finish | endif
 
 if has('nvim')
-	set statusline=%{FugitiveStatusline()}%=%<%f\ %h%m%r%=%l,%L\ %P
+  " we can use multiple %= in nvim to space it nicely
+  set statusline^=%{FugitiveStatusline()}%=
 else
-	set statusline=%{FugitiveStatusline()}%=%<%f\ %h%m%r%=%l,%L\ %P
+  set statusline^=%{FugitiveStatusline()}
 endif
-autocmd! MyInit BufReadPost fugitive://* setlocal bufhidden=delete
+autocmd! MyVimInit BufReadPost fugitive://* setlocal bufhidden=delete
 
 " git/fugitive general interface
 nnoremap <Leader>gg <cmd>G<CR>

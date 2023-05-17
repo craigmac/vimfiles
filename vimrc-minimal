@@ -5,7 +5,7 @@ set nocompatible		" Vi IMproved
 set backspace=indent,eol,start	" allow backspace over all these
 set incsearch			" show matched chars as you type
 set laststatus=2		" show statusline always
-set mouse=nvi			" allow mouse in all modes
+set mouse=a			" allow mouse in all modes
 set ruler			" line/col % in statusline
 set showcmd			" display incomplete commands in bottom-right 
 set wildmenu			" completions menu e.g., :edit *<Tab>
