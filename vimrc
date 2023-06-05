@@ -15,7 +15,7 @@ set signcolumn=yes
 set smartindent
 set splitbelow splitright
 set wildcharm=<C-z>
-set wildoptions=fuzzy,pum,tagfile
+set wildoptions=pum,tagfile
 " remove these from results, still searched unless removed from &path!
 set wildignore+=*/node_modules/*,*/venv/*,*/dist/*
 set wildignore+=*.o,*.obg,*.png,*.jpg,*.jpeg,*.svg,*.gif
@@ -28,22 +28,23 @@ packadd vim-unimpaired
 packadd vim-surround
 packadd vim-commentary
 packadd vim-repeat
-packadd vim-fugitive
-packadd vim-rhubarb
 packadd vim-tmux-navigator
 packadd vim-markdown
-" packadd fuzzyy
+
+packadd asyncrun.vim
+packadd vim-floaterm
+packadd fzf
+packadd fzf.vim
+
 " packadd lsp
+" packadd apprentice
 packadd vim-colortemplate
-packadd apprentice
 " }}}
 
 " Mappings {{{
 imap <C-Space> <C-x><C-o>
 
-nnoremap m<CR> <Cmd>terminal make<CR><C-\><C-n>G<C-w>p
-nnoremap m<Space> :<C-u>terminal make<Space>
-
+nmap m<CR> :<C-u>make<CR>
 nmap <Leader>w <Cmd>update<CR>
 nmap <Leader>, <Cmd>edit $MYVIMRC<CR>
 nmap <Leader>ft :e <C-R>=expand('~/.vim/after/ftplugin/' .. &ft .. '.vim')<CR><CR>
@@ -64,7 +65,7 @@ cmap <expr> <C-p> wildmenumode() ? "<C-P>" : "<Up>"
 
 " Autocmds/Functions {{{
 augroup MyVimInit | autocmd!
-  autocmd BufEnter * if &bt ==# 'terminal' | norm! a | endif
+  " autocmd BufEnter * if &bt ==# 'terminal' | norm! a | endif
   autocmd BufReadPost *
   \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
   \ |   exe "normal! g`\"" | endif
@@ -81,6 +82,4 @@ command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
 " }}}
 
 " TODO:
-" * leader setup for vim or fzf
 
- 

@@ -6,6 +6,15 @@ if has('mac') && has('gui_running')
   set macmeta
   " on MacVim even with `set macmeta` on <M-n> is: î
   tmap î <C-\><C-n>
+  " just translate the ones we need here into Meta versions
+  tmap è <Cmd>wincmd h<CR>
+  tmap è <Cmd>wincmd h<CR>
+  tmap ê <Cmd>wincmd j<CR>
+  tmap ë <Cmd>wincmd k<CR>
+  nmap ì <Cmd>wincmd l<CR>
+  nmap ê <Cmd>wincmd j<CR>
+  nmap ë <Cmd>wincmd k<CR>
+  nmap ì <Cmd>wincmd l<CR>
   " NOTES:
   " `:h macvim-login-shell`, since $SHELL is /bin/zsh by default it only gets
   " set to: 
@@ -15,6 +24,8 @@ if has('mac') && has('gui_running')
   " And we are missing all our .zshrc_local PATH stuff, to fix this set
   " user default MMLoginShellArgument to `"-l"` (if bash is used, this is
   " default). In a terminal use the `defaults` command to change to:
+  "
+  " TLDR: make sure to run in Terminal.app, to use zsh correctly on macOS:
   " `defaults write org.vim.MacVim MMLoginShellArgument "-l"`
 else
   " gVim stuff only here

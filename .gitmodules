@@ -34,3 +34,18 @@
 [submodule "pack/git/opt/apprentice"]
 	path = pack/git/opt/apprentice
 	url = https://github.com/romainl/apprentice
+[submodule "pack/git/opt/vim-dispatch"]
+	path = pack/git/opt/vim-dispatch
+	url = https://github.com/tpope/vim-dispatch
+[submodule "pack/git/opt/asyncrun.vim"]
+	path = pack/git/opt/asyncrun.vim
+	url = https://github.com/skywind3000/asyncrun.vim
+[submodule "pack/git/opt/vim-floaterm"]
+	path = pack/git/opt/vim-floaterm
+	url = https://github.com/voldikss/vim-floaterm
+[submodule "pack/git/opt/fzf"]
+	path = pack/git/opt/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "pack/git/opt/fzf.vim"]
+	path = pack/git/opt/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
