@@ -1,5 +1,10 @@
+set nocompatible
+filetype plugin indent on
+syntax on
 set autoindent
 set autoread
+"set bg=dark
+set backspace=indent,eol,start
 set belloff=all"
 set commentstring=""
 set complete-=i
@@ -14,6 +19,8 @@ set hlsearch
 set incsearch
 set langnoremap
 set laststatus=2
+" system vimrc on macOS sets this to 0, ensure it's on
+set modelines=5
 set mouse=nvi
 set mousemodel=popup_setpos
 set nofsync
@@ -32,6 +39,7 @@ set smarttab
 set switchbuf=uselast
 set tabpagemax=50
 set tags=./tags;,tags
+set ttimeout
 set ttimeoutlen=50
 set ttyfast
 set undodir=~/.vim/tmp/undo
@@ -49,6 +57,7 @@ inoremap <C-W> <C-G>u<C-W>
 xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
 nnoremap & :&&<CR>
+nnoremap Q @@
 
 augroup nvim_defaults
   autocmd!
