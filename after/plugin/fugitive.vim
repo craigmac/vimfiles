@@ -3,13 +3,8 @@
 " only run this file fugitive is loaded
 if !get(g:, 'loaded_fugitive') | finish | endif
 
-if has('nvim')
-  " we can use multiple %= in nvim to space it nicely
-  set statusline^=%{FugitiveStatusline()}%=
-else
-  set statusline^=%{FugitiveStatusline()}
-endif
-autocmd! MyVimInit BufReadPost fugitive://* setlocal bufhidden=delete
+set statusline=%{FugitiveStatusline()}%=%f%=%-14.(%l,%c%V%)\ %P
+autocmd! BufReadPost fugitive://* setlocal bufhidden=delete
 
 " git/fugitive general interface
 nnoremap <Leader>gg <cmd>G<CR>
