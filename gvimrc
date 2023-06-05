@@ -4,14 +4,9 @@ if has('mac') && has('gui_running')
   " MacVim.app - have to check both above because 'mvim' can also be TUI
   cd $HOME/.vim
   set macmeta
-  nmap <SwipeLeft> gT
-  nmap <SwipeRight> gt
   " on MacVim even with `set macmeta` on <M-n> is: î
   tmap î <C-\><C-n>
-  nmap è <C-w>h
-  nmap ê <C-w>j
-  nmap ë <C-w>k
-  nmap ì <C-w>l
+  " NOTES:
   " `:h macvim-login-shell`, since $SHELL is /bin/zsh by default it only gets
   " set to: 
   " /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:
@@ -33,4 +28,3 @@ set guioptions-=e | " remove native gui tabline, use `set tabline` instead
 set guioptions-=r | " remove right hand scrollbar
 set guioptions-=L | " remove left hand scrollbar when window is vert split
 set guioptions+=P | " visual mode selections (w mouse or keys) copied to + register
-
