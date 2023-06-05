@@ -32,6 +32,7 @@ packadd vim-tmux-navigator
 packadd vim-markdown
 
 packadd asyncrun.vim
+packadd asynctasks.vim
 packadd vim-floaterm
 packadd fzf
 packadd fzf.vim

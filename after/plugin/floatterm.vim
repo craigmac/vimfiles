@@ -3,6 +3,7 @@ if !g:loaded_floaterm | finish | end
 nnoremap <leader>ts <Cmd>FloatermNew --wintype=split --height=10 zsh<CR>
 nnoremap <leader>tv <Cmd>FloatermNew --wintype=vsplit --width=0.4 zsh<CR>
 nnoremap  <Cmd>FloatermToggle zsh<CR>
+tnoremap  <Cmd>FloatermToggle zsh<CR>
 
 " FloatermNew! will run <cmd> as child of shell so when quit it
 " goes back to shell

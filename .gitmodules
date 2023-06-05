@@ -13,12 +13,6 @@
 [submodule "pack/git/opt/vim-commentary"]
 	path = pack/git/opt/vim-commentary
 	url = https://github.com/tpope/vim-commentary
-[submodule "pack/git/opt/vim-fugitive"]
-	path = pack/git/opt/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive
-[submodule "pack/git/opt/vim-rhubarb"]
-	path = pack/git/opt/vim-rhubarb
-	url = https://github.com/tpope/vim-rhubarb
 [submodule "pack/git/opt/vim-tmux-navigator"]
 	path = pack/git/opt/vim-tmux-navigator
 	url = https://github.com/christoomey/vim-tmux-navigator
@@ -34,9 +28,6 @@
 [submodule "pack/git/opt/apprentice"]
 	path = pack/git/opt/apprentice
 	url = https://github.com/romainl/apprentice
-[submodule "pack/git/opt/vim-dispatch"]
-	path = pack/git/opt/vim-dispatch
-	url = https://github.com/tpope/vim-dispatch
 [submodule "pack/git/opt/asyncrun.vim"]
 	path = pack/git/opt/asyncrun.vim
 	url = https://github.com/skywind3000/asyncrun.vim
@@ -49,3 +40,6 @@
 [submodule "pack/git/opt/fzf.vim"]
 	path = pack/git/opt/fzf.vim
 	url = https://github.com/junegunn/fzf.vim
+[submodule "pack/git/opt/asynctasks.vim"]
+	path = pack/git/opt/asynctasks.vim
+	url = https://github.com/skywind3000/asynctasks.vim
