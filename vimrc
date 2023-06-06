@@ -2,7 +2,9 @@
 
 " Options {{{
 " ./plugin/neovim-defaults.vim loads before these
+let g:loaded_netrwPlugin = 1
 let g:mapleader = "\<Space>"
+
 set completeopt=menu,menuone,popup,noselect,noinsert
 set grepprg=git\ grep\ --untracked\ -In\ $*
 set guifont=Iosevka\ Fixed:h24
