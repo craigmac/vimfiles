@@ -32,6 +32,7 @@ packadd vim-commentary
 packadd vim-repeat
 packadd vim-tmux-navigator
 packadd vim-markdown
+" packadd vim-qf
 
 " runners
 packadd vim-floaterm
@@ -39,7 +40,7 @@ packadd vim-floaterm
 " completion/finders
 let g:enable_fuzzyy_keymaps = 0
 packadd fuzzyy
-packadd lsp
+" packadd lsp
 
 packadd vim-colortemplate
 

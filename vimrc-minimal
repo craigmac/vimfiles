@@ -1,3 +1,4 @@
+" vi:fdm=marker:nowrap:ft=vim:fdl=99:noet:tw=80:nolist:isk+=-
 " Bare necessities.
 filetype plugin indent on
 syntax on
