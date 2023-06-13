@@ -33,33 +33,35 @@ endif
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 
 " bottom style like Ivy
-" let g:fzf_layout = { 'down': '20%' }
+" let g:fzf_layout = { 'down': '25%' }
 
-let g:fzf_preview_window = ['right,50%', 'ctrl-o']
-
-let g:fzf_colors =
-  \ { 'fg':      ['fg', 'Normal'],
+"  'fzf-item'    ['fg|bg of', 'this hi group name']
+" fg/bg/hl+ means the current item, like current line fg
+let g:fzf_colors = {
+  \ 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
+  \ 'hl':      ['bg', 'Search'],
+  \ 'fg+':     ['fg', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine'],
+  \ 'hl+':     ['fg', 'CurSearch'],
+  \ 'info':    ['fg', 'Comment'],
   \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'gutter': ['bg', 'Normal'],
+  \ 'prompt':  ['fg', 'Comment'],
+  \ 'pointer': ['fg', 'CursorLineNr'],
+  \ 'marker':  ['fg', 'Normal'],
+  \ 'spinner': ['fg', 'Comment'],
+  \ 'gutter':  ['bg', 'Normal'],
   \ 'header':  ['fg', 'Comment'] }
 
 " with this on, c-n/p will cycle history, use c-j/k for up/down as normal
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" nnoremap <Leader><Leader> <Cmd>FZF --reverse<CR>
-nnoremap <Leader><Leader> <Cmd>call fzf#run(fzf#wrap({'source': 'git ls-files', 'sink': 'e', 'options': ['--reverse']}))<CR>
+let g:fzf_preview_window = ['right,50%', 'ctrl-o']
+
+nnoremap <Leader>f <Cmd>FZF<CR>
+" nnoremap <Leader><Leader> <Cmd>call fzf#run(fzf#wrap({'source': 'rg --files ', 'sink': 'e'}))<CR>
 nnoremap <Leader>b <Cmd>Buffers<CR>
-nnoremap <Leader>V <Cmd>FZF --reverse $VIMRUNTIME<CR>
+nnoremap <Leader>V <Cmd>FZF $VIMRUNTIME<CR>
 nnoremap gO <Cmd>BTags<CR>
 nnoremap <Leader>gO <Cmd>Tags<CR>
 nnoremap <Leader>/ <Cmd>Rg<CR>

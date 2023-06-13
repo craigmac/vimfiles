@@ -27,6 +27,16 @@ elseif &term =~# '\(xterm-kitty\|wezterm\)' && has('mac')
   tnoremap <silent> ê <cmd>TmuxNavigateDown<CR>
   tnoremap <silent> ë <cmd>TmuxNavigateUp<CR>
   tnoremap <silent> ì <cmd>TmuxNavigateRight<CR>
+elseif has('gui_macvim')
+  map <nowait><C-[> <Esc>
+  noremap <silent> è <cmd>TmuxNavigateLeft<CR>
+  noremap <silent> ê <cmd>TmuxNavigateDown<CR>
+  noremap <silent> ë <cmd>TmuxNavigateUp<CR>
+  noremap <silent> ì <cmd>TmuxNavigateRight<CR>
+  tnoremap <silent> è <cmd>TmuxNavigateLeft<CR>
+  tnoremap <silent> ê <cmd>TmuxNavigateDown<CR>
+  tnoremap <silent> ë <cmd>TmuxNavigateUp<CR>
+  tnoremap <silent> ì <cmd>TmuxNavigateRight<CR>
 else
   " fallback which may work ok with xterm-like on non-macos
   " and tmux

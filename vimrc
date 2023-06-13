@@ -6,7 +6,7 @@ let g:loaded_netrwPlugin = 1
 let g:mapleader = "\<Space>"
 
 set completeopt=menu,menuone,popup,noselect,noinsert
-set grepprg=git\ grep\ --untracked\ -In\ $*
+if executable('rg') | set grepprg=rg\ --vimgrep\ $* | endif
 set guifont=Iosevka\ Fixed:h24
 set listchars=tab:→\ ,lead:·,trail:▓,eol:↲,precedes:«,extends:»
 set omnifunc=syntaxcomplete#Complete
@@ -33,15 +33,19 @@ packadd vim-repeat
 packadd vim-tmux-navigator
 packadd vim-markdown
 
-packadd asyncrun.vim
-packadd asynctasks.vim
+" runners
 packadd vim-floaterm
-packadd fzf
-packadd fzf.vim
 
-" packadd lsp
-" packadd apprentice
+" completion/finders
+let g:enable_fuzzyy_keymaps = 0
+packadd fuzzyy
+packadd lsp
+
 packadd vim-colortemplate
+
+" packadd ale
+" packadd asyncrun.vim
+" packadd asynctasks.vim
 " }}}
 
 " Mappings {{{
@@ -50,7 +54,7 @@ imap <C-Space> <C-x><C-o>
 nmap m<CR> :<C-u>make<CR>
 nmap <Leader>w <Cmd>update<CR>
 nmap <Leader>, <Cmd>edit $MYVIMRC<CR>
-nmap <Leader>ft :e <C-R>=expand('~/.vim/after/ftplugin/' .. &ft .. '.vim')<CR><CR>
+nmap <Leader>T :e <C-R>=expand('~/.vim/after/ftplugin/' .. &ft .. '.vim')<CR><CR>
 nmap <Leader><CR> <Cmd>source %<CR> <bar> <Cmd>nohlsearch<CR>
 nmap zS <Cmd>echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'

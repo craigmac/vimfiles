@@ -43,3 +43,6 @@
 [submodule "pack/git/opt/asynctasks.vim"]
 	path = pack/git/opt/asynctasks.vim
 	url = https://github.com/skywind3000/asynctasks.vim
+[submodule "pack/git/opt/ale"]
+	path = pack/git/opt/ale
+	url = https://github.com/dense-analysis/ale
