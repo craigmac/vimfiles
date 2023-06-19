@@ -1,3 +1,5 @@
+packadd vim-markdown
+
 setlocal foldlevel=99
 setlocal suffixesadd=.md
 setlocal list

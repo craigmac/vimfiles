@@ -46,3 +46,9 @@
 [submodule "pack/git/opt/ale"]
 	path = pack/git/opt/ale
 	url = https://github.com/dense-analysis/ale
+[submodule "pack/git/opt/vim-fugitive"]
+	path = pack/git/opt/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/git/opt/vim-rhubarb"]
+	path = pack/git/opt/vim-rhubarb
+	url = https://github.com/tpope/vim-rhubarb

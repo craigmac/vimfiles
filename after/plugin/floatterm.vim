@@ -1,4 +1,4 @@
-if !g:loaded_floaterm | finish | end
+if !get(g:, 'loaded_floaterm') | finish | endif
 
 nnoremap <leader>ts <Cmd>FloatermNew --wintype=split --height=10 zsh<CR>
 nnoremap <leader>tv <Cmd>FloatermNew --wintype=vsplit --width=0.4 zsh<CR>

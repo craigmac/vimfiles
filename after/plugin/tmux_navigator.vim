@@ -37,6 +37,7 @@ elseif has('gui_macvim')
   tnoremap <silent> ê <cmd>TmuxNavigateDown<CR>
   tnoremap <silent> ë <cmd>TmuxNavigateUp<CR>
   tnoremap <silent> ì <cmd>TmuxNavigateRight<CR>
+  tnoremap <silent> î <C-\><C-n>
 else
   " fallback which may work ok with xterm-like on non-macos
   " and tmux
