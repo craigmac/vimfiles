@@ -32,7 +32,7 @@ All interpreters enabled, no GUI.
 mkdir ~/git && cd ~/git
 git clone https://github.com/vim/vim
 cd vim/src
-./configure --with-features=huge --enable-python3interp --enable-cscope --enable-fail-if-missing --with-compiledby=craig@MBP --with-python3-config-dir=$(python3.9-config --config)
+./configure --with-features=huge --enable-python3interp --enable-cscope --enable-fail-if-missing --with-compiledby=craig@MBP --with-python3-config-dir=$(python3-config --config)
 # errors without sudo here for xxd tool during build, maybe others
 sudo make
 sudo make install

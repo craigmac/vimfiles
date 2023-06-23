@@ -3,7 +3,7 @@
 " only run this file fugitive is loaded
 if !get(g:, 'loaded_fugitive') | finish | endif
 
-set statusline=%{FugitiveStatusline()}%=%f%=%-14.(%l,%c%V%)\ %P
+set statusline=%{FugitiveStatusline()}%=%f%=%l,%c\ %P
 autocmd! BufReadPost fugitive://* setlocal bufhidden=delete
 
 " git/fugitive general interface

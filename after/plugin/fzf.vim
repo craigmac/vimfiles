@@ -59,11 +59,8 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 let g:fzf_preview_window = ['right,50%', 'ctrl-o']
 
 nnoremap <Leader>f <Cmd>FZF<CR>
-" nnoremap <Leader><Leader> <Cmd>call fzf#run(fzf#wrap({'source': 'rg --files ', 'sink': 'e'}))<CR>
-nnoremap <Leader>b <Cmd>Buffers<CR>
+nnoremap <Leader><Leader> <Cmd>b #<CR>
 nnoremap <Leader>V <Cmd>FZF $VIMRUNTIME<CR>
-nnoremap gO <Cmd>BTags<CR>
-nnoremap <Leader>gO <Cmd>Tags<CR>
 nnoremap <Leader>/ <Cmd>Rg<CR>
 nnoremap <Leader>* :<C-u>Rg <C-r><C-w><CR>
 nnoremap <Leader><F1> <Cmd>Helptags<CR>

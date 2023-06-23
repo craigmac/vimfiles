@@ -10,3 +10,8 @@ let g:cool_total_matches = 1
 
 " https://github.com/christoomey/vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
+
+let g:colortemplate_toolbar = 0
+
+" https://github.com/romainl/vim-qf
+let g:qf_mapping_ack_style = 1
