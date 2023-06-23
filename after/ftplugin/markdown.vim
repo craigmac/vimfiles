@@ -4,6 +4,7 @@ setlocal foldlevel=99
 setlocal suffixesadd=.md
 setlocal list
 setlocal expandtab
+setlocal spell
 
 setlocal commentstring={%\ comment\ %}\ %s\ {%\ endcomment\ %}
 
