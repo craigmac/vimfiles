@@ -1,24 +1,12 @@
 packadd vim-markdown
 
-setlocal foldlevel=99
-setlocal suffixesadd=.md
-setlocal list
 setlocal expandtab
-setlocal spell
-
-setlocal commentstring={%\ comment\ %}\ %s\ {%\ endcomment\ %}
-
-inoreabbrev <buffer> dd@ [DD-](https://jira.dp.hbo.com/browse/DD-)
-
-" MATCHES:
-" 1. {% include {{ page.version }}/snippets/target-platform-before-start.md %}
-" 2. ({{ page.version }}/rn/develop/focus-management/#why-we-need-focus)
-" 3. (../linux/)
-setlocal include={{\\s*page.version\\s*}}\\zs\\/[^\\.\\)]\\+\\\|\\.\\.\\zs\\/[^\\.\\)]\\+
-" equivalent to search pattern /{{\s*page.version\s*}}\zs\/[^\.\)]\+\|\.\.\zs\/[^\.\)]\+
-
 setlocal foldmethod=expr
 setlocal foldexpr=MarkdownFolding(v:lnum)
+setlocal foldlevel=99
+setlocal suffixesadd=.md
+setlocal textwidth=79
+setlocal colorcolumn=80
 
 " My own Markdown folding that only folds on '=\+\s\.+$' lines based on
 " syntax group, using shipped syntax groups from $VIMRUNTIME/syntax/markdown.vim.

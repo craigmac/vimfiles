@@ -6,10 +6,11 @@ if executable('rg') | set grepprg=rg\ --vimgrep\ $* | endif
 
 set guifont=Iosevka\ Fixed:h24
 set listchars=tab:→\ ,lead:·,trail:▓,eol:↲,precedes:«,extends:»
+set noswapfile
 set omnifunc=syntaxcomplete#Complete
 set path-=/usr/include
 set runtimepath+=~/src/personal/colorschemes
-set showbreak=↪
+set showbreak=↪\ 
 set signcolumn=yes
 set smartindent
 set spelllang=en_gb
@@ -35,7 +36,7 @@ packadd fzf
 packadd fzf.vim
 packadd YouCompleteMe
 packadd ale
-
+packadd vim-colortemplate
 " }}}
 
 " Mappings {{{

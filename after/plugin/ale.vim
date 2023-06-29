@@ -10,9 +10,8 @@ nnoremap [d :execute "normal \<Plug>(ale_previous)" <Bar> ALEDetail<CR>
 let g:ale_markdown_markdownlint_executable = 'markdownlint-cli2'
 let g:ale_linters = { 
   \ 'markdown': ['vale', 'cspell', 'markdownlint'], 
-  \ 'sh': ['shellcheck'], 'yaml': ['yamllint'],
+  \ 'sh': ['shellcheck'],
+  \ 'yaml': ['yamllint'],
 \}
-
-set omnifunc=ale#completion#OmniFunc
 
 " TODO: look into setting up `:h ale#statusline#Count()` integration

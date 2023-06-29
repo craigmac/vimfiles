@@ -15,3 +15,4 @@ let g:ale_hover_cursor = 1
 " use floating windows instead of echoing to msgarea
 let g:ale_floating_preview = 1
 
+nnoremap yoa <Cmd>ALEToggleBuffer<CR>
