@@ -16,26 +16,13 @@ if has('mac') && has('gui_running')
   "
   " TLDR: make sure to run in Terminal.app, to use zsh correctly on macOS:
   " `defaults write org.vim.MacVim MMLoginShellArgument "-l"`
-else
-  " gVim stuff only here
-  echomsg '[gvimrc]: detected as running non-macvim GUI (probably gVim?)'
 endif
 
 " Non GUI-specific settings
+set guifont=Iosevka:h18
 set tabpagemax=100
 " default is `set guioptions=egmrL`
 set guioptions-=e | " remove native gui tabline, use `set tabline` instead
 set guioptions-=r | " remove right hand scrollbar
 set guioptions-=L | " remove left hand scrollbar when window is vert split
 set guioptions+=P | " visual mode selections (w mouse or keys) copied to + register
-
-" Remove from right click menu
-silent! aunmenu PopUp.Undo
-silent! aunmenu PopUp.Paste
-silent! aunmenu PopUp.Select\ Word
-silent! aunmenu PopUp.Select\ Sentence
-silent! aunmenu PopUp.Select\ Paragraph
-silent! aunmenu PopUp.Select\ Line
-silent! aunmenu PopUp.Select\ Block
-silent! aunmenu PopUp.Select\ Blockwise
-silent! aunmenu PopUp.Select\ All

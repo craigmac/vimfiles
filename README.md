@@ -20,11 +20,11 @@ git submodule add <url>
 
 ```sh
 cd ~/.vim/pack/third-part/opt/vim-foo
-git pull
+git pull origin master
 ```
 
 ```sh
-git submodule foreach git pull
+git submodule foreach git pull origin master
 ```
 
 ## Removing package

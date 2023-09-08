@@ -1,12 +1,13 @@
 set nocompatible
 filetype plugin indent on
 syntax on
+
 set autoindent
 set autoread
-"set bg=dark
+set bg=dark
 set backspace=indent,eol,start
-set belloff=all"
-set commentstring=""
+set belloff=all
+set commentstring=
 set complete-=i
 set directory=~/.vim/tmp/swap//
 set display=lastline
@@ -19,7 +20,6 @@ set hlsearch
 set incsearch
 set langnoremap
 set laststatus=2
-" system vimrc on macOS sets this to 0, ensure it's on
 set modelines=5
 set mouse=nvi
 set mousemodel=popup_setpos
@@ -58,8 +58,3 @@ xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
 nnoremap & :&&<CR>
 nnoremap Q @@
-
-augroup nvim_defaults
-  autocmd!
-  autocmd CmdwinEnter [:>] syntax sync minlines=1 maxlines=1
-augroup END

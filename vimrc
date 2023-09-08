@@ -1,60 +1,65 @@
-" vi: fdm=marker:nowrap:ft=vim:fdl=99:noet:tw=100:nolist
+vim9script
 
-" Options {{{
-let g:mapleader = "\<Space>"
+# Options {{{
+g:mapleader = ' '
 if executable('rg') | set grepprg=rg\ --vimgrep\ $* | endif
 
-set guifont=Iosevka\ Fixed:h24
 set listchars=tab:→\ ,lead:·,trail:▓,eol:↲,precedes:«,extends:»
 set noswapfile
 set omnifunc=syntaxcomplete#Complete
 set path-=/usr/include
-set runtimepath+=~/src/personal/colorschemes
 set showbreak=↪\ 
-set signcolumn=yes
-set smartindent
-set spelllang=en_gb
-set splitbelow splitright
 set wildcharm=<C-z>
 set wildoptions=pum,tagfile
 set wildignore+=*/node_modules/*,*/venv/*,*/dist/*
-set wildignore+=*.o,*.obg,*.png,*.jpg,*.jpeg,*.svg,*.gif
-colorscheme fortnight
-"}}}
+set wildignore+=*.o,*.obj,*.png,*.jpg,*.jpeg,*.svg,*.gif
 
-" Packages {{{
-packadd vim-unimpaired
-packadd vim-surround
-packadd vim-commentary
-packadd vim-repeat
-packadd vim-tmux-navigator
-packadd vim-fugitive
-packadd vim-rhubarb
-packadd vim-qf
+colorscheme zaibatsu
+#}}}
 
-packadd fzf
-packadd fzf.vim
-packadd YouCompleteMe
-packadd ale
-packadd vim-colortemplate
-" }}}
+# Packages config {{{
+if has('patch-9.0.1880') | packadd editorconfig | endif
 
-" Mappings {{{
-imap <C-Space> <C-x><C-o>
-nmap <Leader>/ :<C-u>silent grep!<Space>
-nmap m<CR> :<C-u>make<CR>
+# fugitive
+nnoremap <Leader>g :G<Space>
+nnoremap <Leader>ge <cmd>Gedit <Bar> only<CR>
+nnoremap <Leader>gd <cmd>Gvdiffsplit<CR>
+nnoremap <Leader>gl <cmd>G log --oneline --decorate<CR>
+nnoremap <Leader>gL <cmd>G log --oneline --decorate -- %<CR>
+nnoremap <Leader>g/ :Ggrep! -HnriqE<Space>
+nnoremap <Leader>gS :G! log -p -S<Space>
+nnoremap <Leader>gs :G! log -p -S -- %<S-Left><S-Left>
+nnoremap <Leader>g* :Ggrep! -Hnri --quiet <C-r>=expand("<cword>")<CR><CR>
+nnoremap <Leader>gb <cmd>G blame<CR>
+# set statusline=%f%{FugitiveStatusline()}%=%l,%c\ %P
+
+# netrw
+g:netrw_banner = 0
+g:netrw_hide = 1
+g:netrw_liststyle = 3
+g:netrw_sizestyle = 'H'
+# 'a' to toggle between normal/hiding these/only these displayed
+g:netrw_list_hide = netrw_gitignore#Hide()
+# use echoerr instead of temp window you have to close
+g:netrw_use_errorwindow = 2
+
+nnoremap <Leader>E <Cmd>Lexplore!<CR>
+nnoremap <Leader>e. <Cmd>Lexplore! %:h<CR>
+# }}}
+
+# Mappings {{{
 nmap <Leader>w <Cmd>update<CR>
 nmap <Leader>, <Cmd>edit $MYVIMRC<CR>
 nmap <Leader><CR> <Cmd>source %<CR> <bar> <Cmd>nohlsearch<CR>
-nmap zS <Cmd>echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')<CR>
+
+imap <Nul> <C-x><C-o>
+
+nnoremap <Leader>/ :vim! //j ** <Bar> cw 5<C-b><C-Right><Right><Right>
+nmap m<CR> :<C-u>make<CR>
+
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
-nmap g> :<C-u>Redir<Space>
-nmap ' `
-nnoremap / /\c
-nnoremap ? ?\c
 
-cmap <expr> %. getcmdtype() == ':' ? expand('%:h') .. '/' : '%.'
 cmap <expr> <C-n> wildmenumode() ? '<C-N>' : '<Down>'
 cmap <expr> <C-p> wildmenumode() ? '<C-P>' : '<Up>'
 
@@ -64,26 +69,22 @@ nnoremap <Leader>y "+y
 xnoremap <Leader>y "+y
 
 xmap . :g/^/norm! .<CR>
-" }}}
+# }}}
 
-" Autocmds/Functions {{{
-augroup MyAugroup
-  autocmd!
-  autocmd BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$")
-    \&& &ft !~ 'commit' | execute 'normal! g`"'
-    \| endif
-augroup END
+# Autocmds/Functions {{{
+# augroup User
+  # autocmd!
+  # autocmd BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~ 'commit'
+  #   | execute 'normal! g`"'
+    # | endif
+  # autocmd FileType qf packadd cfilter
+  # autocmd BufReadPost fugitive://* setlocal bufhidden=delete
+# augroup END
 
-" }}}
+# }}}
 
-" Commands {{{
-command! Cd tcd %:h
-command! Bonly .+,$bwipeout
-command! TodoLocal :botright silent! lvimgrep /\v\CTODO|FIXME|HACK|DEV/ %<CR>
-command! RemoveExtraNewlines :%s/\v(\n\n)\n+/\1/e
-command! DiffOrig vert new | set bt=nofile | r ++edit \# | 0d_ | diffthis | wincmd p | diffthis
-" }}}
+# Commands {{{
+# command! DiffOrig vert new | set bt=nofile | r ++edit \# | 0d_ | diffthis | wincmd p | diffthis
+# # }}}
 
-" TODO:
-" * make install/update script in .vim/install.sh for YCM and submodules
-"
+# vi: fdm=marker ft=vim fdl=0 ts=2 et sw=2 tw=100
