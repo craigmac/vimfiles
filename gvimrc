@@ -18,7 +18,6 @@ if has('mac') && has('gui_running')
 endif
 
 set tabpagemax=100
-set guifont=Iosevka\ Nerd\ Font\ 16
 
 " default is `egmrLtT`
 "

@@ -1,44 +1,14 @@
-" Options {{{
-let g:mapleader = ' '
-if executable('rg') | set grepprg=rg\ --vimgrep\ $* | endif
+vim9script
 
-" modernize using utf-8 characters
-set listchars=tab:\ ,lead:·,trail:·,eol:\ ,precedes:\ ,extends:\ ,
-set fillchars=vert:│,stl:\ ,stlnc:\ ,fold:\ ,foldopen:,foldclose:,foldsep:\ ,diff:-,eob:\ ,lastline:\ ,
-set noswapfile
-set omnifunc=syntaxcomplete#Complete
-set path-=/usr/include
-set showbreak=\ 
-set wildoptions=pum,tagfile
-set wildignore+=*/node_modules/*,*/venv/*,*/dist/*
-set wildignore+=*.o,*.obj,*.png,*.jpg,*.jpeg,*.svg,*.gif
-set splitbelow splitright
-set signcolumn=yes
-set ignorecase smartcase
-set cursorline
-set termguicolors
-set shortmess+=sWAI
-set guifont=JetBrains\ Mono:h18
-colorscheme zaibatsu
-"}}}
+g:mapleader = ' '
+g:netrw_banner = 0
+if has_key(environ(), 'TMUX') | set termguicolors | endif
 
-" Packages config {{{
-if has('patch-9.0.1880') | packadd editorconfig | endif
-
-let g:netrw_banner = 0
-let g:netrw_hide = 1
-let g:netrw_sizestyle = 'H'
-let g:netrw_list_hide = netrw_gitignore#Hide()
-" use echoerr instead of temp window you have to close
-let g:netrw_use_errorwindow = 2
-" }}}
-
-" Mappings {{{
-nnoremap <Leader>E <Cmd>silent 25Lexplore!<CR>
+set noswapfile			# annoying
+set wildoptions=pum 		# vertical cmdline-completion menu
 
 nmap <Leader>w <Cmd>update<CR>
-nmap <Leader>, <Cmd>edit $MYVIMRC<CR>
-nmap <Leader><CR> <Cmd>source %<CR> <bar> <Cmd>nohlsearch<CR>
+nmap <Leader>E <Cmd>Lexplore<CR>
 
 nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
@@ -51,20 +21,4 @@ nnoremap <Leader>P "+P
 nnoremap <Leader>y "+y
 xnoremap <Leader>y "+y
 
-xmap . :g/^/norm! .<CR>
-" }}}
-
-" Autocmds/Functions {{{
-augroup User
-  autocmd!
-  autocmd BufReadPost * if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~ 'commit'
-    \ | execute 'normal! g`"' | endif
-  autocmd FileType qf packadd cfilter
-augroup END
-
-" }}}
-
-" Commands {{{
-" }}}
-
-" vi: fdm=marker ft=vim fdl=0 et sw=2 sts=-1 tw=100
+colorscheme zaibatsu
