@@ -1,3 +1,5 @@
+" keep in ./plugin directory wherever your vimrc is to run this first before
+" your vimrc settings, to bring us close to neovim defaults
 set nocompatible
 filetype plugin indent on
 syntax on
@@ -9,6 +11,14 @@ set backspace=indent,eol,start
 set belloff=all
 set commentstring=
 set complete-=i
+" on win32 you'll have to adjust this yourself, Vim doesn't have any
+" handy stdpath() functions from Neovim.
+if !has('win32')
+  " E303 errors happen if .vim/tmp/swap doesn't exist, so make it
+  if !finddir(expand('$HOME') .. '/.vim/tmp/swap')
+    call mkdir(expand('$HOME') .. '/.vim/tmp/swap', 'p')
+  endif
+endif
 set directory=~/.vim/tmp/swap//
 set display=lastline
 set encoding=utf-8
@@ -47,6 +57,7 @@ set viewoptions+=unix,slash
 set viewoptions-=options
 set viminfo+=!
 set wildmenu
+set wildoptions+=pum
 let g:vimsyn_embed = 'l'
 packadd matchit
 
@@ -58,3 +69,5 @@ xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
 nnoremap & :&&<CR>
 nnoremap Q @@
+
+" vi:et ts=2 sw=2 sts=-1
