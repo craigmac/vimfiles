@@ -1,11 +1,7 @@
-vim9script
+let g:mapleader = ' '
+let g:netrw_banner = 0
 
-g:mapleader = ' '
-g:netrw_banner = 0
 if has_key(environ(), 'TMUX') | set termguicolors | endif
-
-set noswapfile			# annoying
-set wildoptions=pum 		# vertical cmdline-completion menu
 
 nmap <Leader>w <Cmd>update<CR>
 nmap <Leader>E <Cmd>Lexplore<CR>
