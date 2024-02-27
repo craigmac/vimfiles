@@ -6,7 +6,6 @@ syntax on
 
 set autoindent
 set autoread
-set bg=dark
 set backspace=indent,eol,start
 set belloff=all
 set commentstring=
