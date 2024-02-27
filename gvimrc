@@ -18,6 +18,7 @@ if has('mac') && has('gui_running')
 endif
 
 set tabpagemax=100
+set guifont=BerkeleyMono-Regular:h18
 
 " default is `egmrLtT`
 "
@@ -28,3 +29,6 @@ set guioptions+=P | " visual mode selections (w mouse or keys) copied to + regis
 set guioptions-=t | " remove tearoff menus
 set guioptions-=T | " remove toolbar
 set guioptions-=m | " remove menubar
+
+set background=light
+colorscheme macvim
