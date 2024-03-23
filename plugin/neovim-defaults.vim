@@ -10,18 +10,16 @@ set backspace=indent,eol,start
 set belloff=all
 set commentstring=
 set complete-=i
-" on win32 you'll have to adjust this yourself, Vim doesn't have any
-" handy stdpath() functions from Neovim.
+" adjust this on win32, no handy Nvim stdpath() function available in Vim
 if !has('win32')
-  " E303 errors happen if .vim/tmp/swap doesn't exist, so make it
-  if !finddir(expand('$HOME') .. '/.vim/tmp/swap')
-    call mkdir(expand('$HOME') .. '/.vim/tmp/swap', 'p')
+  if !isdirectory(expand('$HOME') . '/.vim/cache/swap')
+    call mkdir(expand('$HOME') . '/.vim/cache/swap', 'p')
   endif
 endif
-set directory=~/.vim/tmp/swap//
+let &directory=expand('$HOME') . '/.vim/cache/swap/' . '/'
 set display=lastline
 set encoding=utf-8
-set fillchars=vert:│,fold:·,eob:~
+set fillchars="vert:│,fold:·,eob:~"
 set formatoptions=tcqj
 set hidden
 set history=10000
@@ -45,18 +43,18 @@ set shortmess-=S
 set showcmd
 set sidescroll=1
 set smarttab
-set switchbuf=uselast
+if v:version > 900 | set switchbuf=uselast | endif
 set tabpagemax=50
 set tags=./tags;,tags
 set ttimeout
 set ttimeoutlen=50
 set ttyfast
-set undodir=~/.vim/tmp/undo
+set undodir=~/.vim/cache/undo
 set viewoptions+=unix,slash
 set viewoptions-=options
 set viminfo+=!
 set wildmenu
-set wildoptions+=pum
+if v:version > 900 | set wildoptions+=pum | endif
 let g:vimsyn_embed = 'l'
 packadd matchit
 
