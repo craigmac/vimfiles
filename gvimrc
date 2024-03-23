@@ -29,6 +29,4 @@ set guioptions+=P | " visual mode selections (w mouse or keys) copied to + regis
 set guioptions-=t | " remove tearoff menus
 set guioptions-=T | " remove toolbar
 set guioptions-=m | " remove menubar
-
-set background=light
-colorscheme macvim
+set guioptions+=k | " recommended by macvim when its 'smooth resize' option is on
