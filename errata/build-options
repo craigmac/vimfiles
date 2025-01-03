@@ -1,0 +1,15 @@
+--with-features=huge \
+--with-compiledby='C.D. MacEachern' \
+--enable-gui=auto \
+--enable-gtk2-check=false \
+--enable-motif-check=false \
+--enable-gnome-check=yes \
+--enable-gtk3-check=yes \
+
+--with-luajit \
+--enable-python3interp=yes \
+--enable-luainterp=yes \
+--enable-fail-if-missing
+
+
+
