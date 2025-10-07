@@ -5,3 +5,7 @@ tmp/
 .netrwhist
 plugged/
 pack/
+cache/
+.local/
+.cache/
+TODO\*

@@ -6,7 +6,6 @@ if has('mac') && has('gui_running')
 endif
 
 set tabpagemax=100
-set guifont=BerkeleyMono-Regular:h18
 
 " default is `egmrLtT`
 "
