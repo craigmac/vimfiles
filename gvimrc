@@ -1,7 +1,7 @@
 " GUI settings - see `:h gui.txt` for common stuff, `:h gui-macvim` for MacVim
 
+" for MacVim.app we have to check both because 'mvim' can also be TUI
 if has('mac') && has('gui_running')
-  " MacVim.app - have to check both above because 'mvim' can also be TUI
   set macmeta
 endif
 

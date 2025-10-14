@@ -1,9 +1,10 @@
 vim9script
+finish
 
 try
   colorscheme hybrid
 catch
-  colorscheme habamax
+  colorscheme sorbet
   finish
 endtry
 
