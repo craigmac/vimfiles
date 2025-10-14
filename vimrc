@@ -30,17 +30,14 @@ set wildoptions=exacttext,fuzzy,pum,tagfile
 
 # configs go in `./plugin`, e.g., `plugin/vim-fugitive.vim`
 plug#begin()
+Plug 'justinmk/vim-sneak'
+Plug 'romainl/vim-qf'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-rsi'
-Plug 'romainl/vim-qf'
 Plug 'tommcdo/vim-lion'
-Plug 'justinmk/vim-sneak'
 Plug 'christoomey/vim-tmux-navigator'
 plug#end()
 
@@ -95,6 +92,7 @@ augroup END
 packadd netrw
 packadd nohlsearch
 packadd hlyank
+packadd comment
 
 # takes quite a while to load sometimes, but basic fuzzy finding
 def Find(arg: string, _): list<string>
