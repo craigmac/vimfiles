@@ -7,10 +7,14 @@ g:markdown_fenced_languages = ['json', 'bash']
 g:netrw_banner = 0
 g:is_posix = 1 # more-better colours for sh ft
 
+var ver = split(string(v:version), '\zs') # => ['9', '0', '1']
+var patch = strpart(string(v:versionlong), 3)
+g:full_version = printf("%s.%s.%s", ver[0], ver[-1], patch)
+
 # options
 set findfunc=Find
 &guifont = has('win64') ? 'Adwaita_Mono:h14:cANSI:qDRAFT' : 'Adwaita Mono 14'
-set fillchars=eob:-,fold:\ ,foldopen:▶,foldclose:▼,diff:\ ,lastline:\  
+set fillchars=eob:\ ,fold:\ ,foldopen:▶,foldclose:▼,diff:\ ,lastline:\  
 set list listchars=eol:\ ,tab:>\ ,trail:█,extends:»,precedes:«
 set linebreak showbreak=↪\ 
 set pumheight=10
@@ -18,8 +22,11 @@ set noshowmode
 set shiftwidth=2 softtabstop=-1
 set shortmess=aoOstTWAIcCqFS
 set smoothscroll
+set statusline=%<%F\ »\ %l/%L:%c\ »\ %p%%\ »\ %{&ft}
 set undofile
 set ignorecase smartcase
+set titlestring=%{g:full_version}
+# set titlestring=%{get\(v:, 'version')}\ %{hostname()}\ %{expand(\"%:~:.:h\")}%(\ %a%)
 set wildcharm=<C-z>
 set wildignore+=*.swp,*~,*.o,*.obj,.DS_Store,*.bak
 # ignore matches that have these directories somewhere in the full path
