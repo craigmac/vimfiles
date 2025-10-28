@@ -1,51 +1,66 @@
 vim9script
-# vi: et tw=100 sw=2 sts=-1 fdm=marker
 
-# globals
 g:mapleader = ' '
 g:markdown_fenced_languages = ['json', 'bash']
 g:netrw_banner = 0
-g:is_posix = 1 # more-better colours for sh ft
 
 var ver = split(string(v:version), '\zs') # => ['9', '0', '1']
 var patch = strpart(string(v:versionlong), 3)
 g:full_version = printf("%s.%s.%s", ver[0], ver[-1], patch)
 
-# options
-set findfunc=Find
+# UI/Special Chars
 &guifont = has('win64') ? 'Adwaita_Mono:h14:cANSI:qDRAFT' : 'Adwaita Mono 14'
-set fillchars=eob:\ ,fold:\ ,foldopen:▶,foldclose:▼,diff:\ ,lastline:\  
-set list listchars=eol:\ ,tab:>\ ,trail:█,extends:»,precedes:«
-set linebreak showbreak=↪\ 
-set pumheight=10
-set noshowmode
-set shiftwidth=2 softtabstop=-1
-set shortmess=aoOstTWAIcCqFS
+set fillchars=eob:\ ,fold:\ ,foldopen:▼,foldclose:▶,foldsep:\ ,foldinner:\ 
+set fillchars+=diff:\ ,lastline:⋯,vert:│,trunc:⋯,truncrl:⋯,tpl_vert:│
+set list
+set listchars=eol:¬,tab:>\ ,trail:█,extends:»,precedes:«
+
+# no wrap but if toggled on use these options
+set nowrap
+set breakindent
+set breakindentopt=sbr
+set linebreak
+set nojoinspaces
+set showbreak=↪\ 
+
+# misc
+set helpheight=0 # messes with 'equalalways
 set smoothscroll
-set statusline=%<%F\ »\ %l/%L:%c\ »\ %p%%\ »\ %{&ft}
 set undofile
-set ignorecase smartcase
-set titlestring=%{g:full_version}
-# set titlestring=%{get\(v:, 'version')}\ %{hostname()}\ %{expand(\"%:~:.:h\")}%(\ %a%)
+set virtualedit=block
+
+# completion/finding
+set autocomplete
+set complete=o^10,.^10,w^5,b^5
+set completeopt=menuone,popup,fuzzy,noselect
+set completefuzzycollect=keyword,files,whole_line
+set completepopup=highlight:Pmenu,border:single,shadow:on
+set pumborder=round
+set findfunc=Find
+set ignorecase
+set pumheight=10
+set smartcase
 set wildcharm=<C-z>
-set wildignore+=*.swp,*~,*.o,*.obj,.DS_Store,*.bak
-# ignore matches that have these directories somewhere in the full path
+set wildignore+=*.swp,*~,*.bak,*.o,*.obj,.DS_Store,.netrwh
 set wildignore+=.git/,.node_modules/,.cache/,tmp/
-# works well with wildtrigger()
 set wildmode=noselect:lastused,full
 set wildoptions=exacttext,fuzzy,pum,tagfile
 
+# bars and lines
+set statusline=%<%f\ »\ %l/%L:%c\ »\ %p%%\ »\ %{&ft}
+set titlestring=%{g:full_version}\ -\ %{getcwd()}
+
 # configs go in `./plugin`, e.g., `plugin/vim-fugitive.vim`
 plug#begin()
-Plug 'justinmk/vim-sneak'
 Plug 'romainl/vim-qf'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-endwise'
 Plug 'tommcdo/vim-lion'
-Plug 'christoomey/vim-tmux-navigator'
 plug#end()
 
 nnoremap <Leader>w <Cmd>update<CR>
@@ -54,17 +69,19 @@ nnoremap <Leader><Space> <Cmd>buffer #<CR>
 nnoremap <Leader>b :<C-u>buffer<Space>
 nnoremap <Leader>f :<C-u>find<Space>
 nnoremap <Leader><CR> <Cmd>source %<CR>
-# zoom current window, use <C-w>= to un-zoom
-nnoremap <Leader>z :<C-u>wincmd _ <Bar> wincmd \|<CR>
+nnoremap <Leader>z <Cmd>wincmd _ <Bar> wincmd \|<CR>
 nnoremap <expr> <Leader>e exists("g:loaded_netrw") == 1 ? "<Cmd>Rexplore<CR>" : "<Cmd>Explore<CR>"
-nnoremap <expr> j v:count == 0 ? 'gj' : "\<Esc>" .. v:count .. 'j'
-nnoremap <expr> k v:count == 0 ? 'gk' : "\<Esc>" .. v:count .. 'k'
+nnoremap <expr> j v:count == 0 ? 'gj' : '<Esc>' .. v:count .. 'j'
+nnoremap <expr> k v:count == 0 ? 'gk' : '<Esc>' .. v:count .. 'k'
+
+# nvim has :Inspect, we have this
+nnoremap zS :<C-u>echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>
 
 # this trick only works in vim
 cnoremap w!! w !sudo tee > /dev/null %
 cnoremap <expr> <C-p> wildmenumode() ? '<C-p>' : '<Up>'
 cnoremap <expr> <C-n> wildmenumode() ? '<C-n>' : '<Down>'
-# retain cmdline history Up/Down with wildtrigger() by cancelling it first
+# retain cmdline history keys Up/Down even if wildmenu open
 cnoremap <expr> <Up> wildmenumode() ? '<C-e><Up>' : '<Up>'
 cnoremap <expr> <Down> wildmenumode() ? '<C-e><Down>' : '<Down>'
 
@@ -91,27 +108,39 @@ augroup my.augroup.vimrc | autocmd!
       execute "normal! g`\""
     endif
   }
-  au CmdlineChanged [:\/\?] call wildtrigger()
-  # reset any cache setup for use with Find()
-  au CmdlineEnter : g:filescache = []
+  # autocmd CmdlineChanged [:\/\?] call wildtrigger()
+  autocmd CmdlineChanged : wildtrigger()
 augroup END
 
+packadd editorconfig
 packadd netrw
 packadd nohlsearch
 packadd hlyank
 packadd comment
 
-# takes quite a while to load sometimes, but basic fuzzy finding
 def Find(arg: string, _): list<string>
-  if empty(g:filescache)
-    # use 1 instead of 0 for third param to ignore 'wildignore and 'suffixes
-    g:filescache = globpath('.', '**', 0, 1)
+    g:filescache = globpath('.', '**', true, true)
     filter(g:filescache, '!isdirectory(v:val)')
-    map(g:filescache, "fnamemodify(v:val, ':.')")
-  endif
-  return arg == '' ? g:filescache : matchfuzzy(g:filescache, arg)
+    map(g:filescache, 'fnamemodify(v:val, ":.")')
+    return arg == '' ? g:filescache : matchfuzzy(g:filescache, arg)
 enddef
 defcompile
 g:filescache = []
 
-colorscheme sorbet
+colorscheme wildcharm
+set bg=light
+
+hi! PmenuBorder guibg=NONE
+hi! link Pmenu Normal
+hi! PmenuSel guibg=NONE
+hi! PmenuMatch guibg=NONE
+hi! PmenuSel guibg=#eeeeee
+# highlight for match in pmenu AND currently selected line
+hi! PmenuMatchSel guibg=#eeeeee
+hi! PmenuKind guibg=NONE
+hi! PmenuKindSel guibg=#eeeeee
+hi! link PmenuExtra Normal
+hi! PmenuExtraSel guifg=fg guibg=#eeeeee
+
+# colorscheme play
+# vi: et tw=100 sw=2 sts=-1 fdm=marker
