@@ -1,8 +1,5 @@
 vim9script
 
-# skip if not loaded (probably not installed)
-if !exists('g:loaded_tmux_navigator') | finish | endif
-
 g:tmux_navigator_no_mappings = 1
 g:tmux_navigator_disable_netrw_workaround = 1
 

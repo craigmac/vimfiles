@@ -1,8 +1,5 @@
 vim9script
 
-# skip if not loaded (probably not installed)
-if !exists('g:loaded_qf') | finish | endif
-
 # open current item in (s)plit, (v)ertical, (t)ab, (o)pen and come back,
 # (O)pen and close loc/qf window, (p)review
 g:qf_mapping_ack_style = 1

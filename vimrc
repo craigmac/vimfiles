@@ -199,7 +199,8 @@ stl ..= ' %{&filetype}'
 &statusline = stl
 set titlestring=%{g:full_version}\ -\ %{getcwd()}
 
-# configs go in `./plugin` and are loaded after this file
+# configs go in `./plugin` and are loaded after this file then $MYVIMRDIR/plugged/**/plugin/*.vim
+# files load so don't count on `g:loaded_<plugin>` variables in the `plugin/*.vim` files
 plug#begin()
 Plug 'romainl/vim-qf'
 Plug 'tpope/vim-surround'
@@ -225,9 +226,11 @@ nnoremap <Leader>b :<C-u>buffer<Space>
 nnoremap <Leader>f :<C-u>find<Space>
 nnoremap <Leader><CR> <Cmd>source %<CR>
 nnoremap <Leader>z <Cmd>wincmd _ <Bar> wincmd \|<CR>
-nnoremap <expr> <Leader>e exists("g:loaded_netrw") == 1 ? "<Cmd>Rexplore<CR>" : "<Cmd>Explore<CR>"
+nnoremap <expr> <Leader>e exists('g:loaded_netrw') ? exists('w:netrw_rexlocal') ? '<Cmd>Rexplore<CR>' : '<Cmd>Explore<CR>' : '<Cmd>Explore<CR>'
 nnoremap <expr> j v:count == 0 ? 'gj' : '<Esc>' .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : '<Esc>' .. v:count .. 'k'
+nnoremap <Leader>vp <Cmd>tabedit $MYVIMDIR/plugged<CR>
+nnoremap <Leader>vr <Cmd>tabedit $VIMRUNTIME<CR>
 
 # nvim has :Inspect, we have this
 nnoremap zS :<C-u>echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>

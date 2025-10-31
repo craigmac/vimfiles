@@ -17,3 +17,6 @@ set guioptions-=t | " remove tearoff menus
 set guioptions-=T | " remove toolbar
 set guioptions-=m | " remove menubar
 set guioptions+=k | " recommended by macvim when its 'smooth resize' option is on
+
+" gvim defaults to ~ which always messes me up and causes huge lag with fzf
+cd $MYVIMDIR

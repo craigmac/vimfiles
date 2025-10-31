@@ -2,9 +2,6 @@ vim9script
 # https://github.com/junegunn/fzf
 # https://github.com/junegunn/fzf.vim
 
-# skip if not loaded (probably not installed)
-if !exists('g:loaded_fzf') | finish | endif
-
 # NOTES:
 # * bang (!) versions open in fullscreen.
 # * each command internally calls fzf#wrap from main junegunn/fzf repo,
