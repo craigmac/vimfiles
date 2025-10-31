@@ -1,19 +1,157 @@
 vim9script
 
+# neovim-defaults (ish) {{{1
+# TODO: grepprg or -H and -I with 'grep'
+
+filetype plugin indent on
+syntax on
+
+# if we add lua heredoc to a vim script file, highlight it
+g:vimsyn_embed = 'l'
+
+set autoindent
+set autoread
+set background=dark
+set backspace=indent,eol,start
+set belloff=all
+set comments+=fb:•
+set commentstring=
+set complete-=i
+set define=''
+set diffopt=internal,filler,closeoff,linematch:60
+# adjust this on win32, no handy Nvim stdpath() function available in Vim
+if !has('win32')
+  if !isdirectory(expand('$HOME') .. '/.vim/cache/swap')
+    call mkdir(expand('$HOME') .. '/.vim/cache/swap', 'p')
+  endif
+endif
+&directory = expand('$HOME') .. '/.vim/cache/swap/' .. '/'
+set display=lastline
+set encoding=utf-8
+set exrc
+set fillchars+=vert:│,fold:·
+set formatoptions=tcqj
+if has('win64') | set isfname-=: | endif
+if executable('rg') | set grepprg=rg\ --vimgrep\ $* | endif
+set hidden
+set history=10000
+set hlsearch
+set incsearch
+set include=''
+set langnoremap
+set laststatus=2
+set modelines=5
+set mouse=nvi
+set mousemodel=popup_setpos
+set nofsync
+set nojoinspaces
+set nolangremap
+set nostartofline
+set noswapfile
+set nrformats=bin,hex
+if v:version > 900 | set switchbuf=uselast | endif
+set path-=/usr/include
+set ruler
+set sessionoptions+=unix,slash
+set sessionoptions-=options
+set shortmess+=CF
+set shortmess-=S
+set showcmd
+set sidescroll=1
+set smarttab
+set tabpagemax=50
+set tags=./tags;,tags
+# turned on in nvim if term emulator detected capable of handling truecolor
+set termguicolors
+set ttimeout
+set ttimeoutlen=50
+set ttyfast
+set undodir=~/.vim/cache/undo
+set viewoptions+=unix,slash
+set viewoptions-=options
+set viminfo+=!
+set wildmenu
+if v:version > 900 | set wildoptions=pum,tagfile | endif
+
+packadd matchit
+# nvim ships a runtime lua plugin ran automatically
+if v:version > 900 | packadd editorconfig | endif
+# nvim has commenting builtin to its _defaults.lua
+if v:version >= 901 | packadd comment | endif
+
+# if we are in terminal vim, setup changing of cursor shapes
+if !has('gui_running') && &term == 'win32'
+  # Use DECSCUSR [DEC (S)et (CU)r(S)o(R)] style escape sequences
+  &t_SI = "\e[6 q"    # non-blinking bar
+  &t_SR = "\e[4 q"    # non-blinking underline
+  &t_EI = "\e[2 q"    # non-blinking block
+  &t_ti ..= "\e[2 q"  # non-blinking block
+  &t_te ..= "\e[0 q"  # default (depends on terminal, normally blink block)
+endif
+
+nnoremap Y y$
+nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>
+inoremap <C-U> <C-G>u<C-U>
+inoremap <C-W> <C-G>u<C-W>
+xnoremap * y/\V<C-R>"<CR>
+xnoremap # y?\V<C-R>"<CR>
+nnoremap & :&&<CR>
+# rerun last macro with `Q`, unless in Visual/Replace modes
+nnoremap <expr> Q mode() ==# 'V' ? ':normal! @<C-R>reg_recorded()<CR><CR>' : 'Q'
+# in linewise Visual mode, execute macro on each selected line, like @.
+xnoremap <expr> @ mode() ==# 'V' ? ':normal! @<C-R>=reg_recorded()<CR><CR>' : 'Q'
+
+augroup my.nvim.defaults | au!
+  # equivalent to nvim's TermOpen event
+  au TerminalWinOpen * {
+    setl nomodifiable
+    setl nonumber
+    setl norelativenumber
+    setl nolist
+    setl signcolumn=no
+    setl foldcolumn=0
+  }
+  # emulate nvim's gO in help files using vim runtime plugin for it
+  au FileType help {
+    packadd helptoc
+    nnoremap <buffer> gO <Cmd>HelpToc<CR>
+  }
+augroup END
+
+# link terminal buffer stl to regular stl don't use vim's green stl
+hi! link StatusLineTerm StatusLine
+hi! link StatusLineTermNC StatusLineNC
+# }}}
+
 g:mapleader = ' '
 g:markdown_fenced_languages = ['json', 'bash']
 g:netrw_banner = 0
 
+# get full vim version like '9.1.1882' for display, e.g., in &titlestring
 var ver = split(string(v:version), '\zs') # => ['9', '0', '1']
 var patch = strpart(string(v:versionlong), 3)
 g:full_version = printf("%s.%s.%s", ver[0], ver[-1], patch)
 
 # UI/Special Chars
 &guifont = has('win64') ? 'Adwaita_Mono:h14:cANSI:qDRAFT' : 'Adwaita Mono 14'
+# eob not in modern editors and `set number` makes it irrelevant
 set fillchars=eob:\ ,fold:\ ,foldopen:▼,foldclose:▶,foldsep:\ ,foldinner:\ 
-set fillchars+=diff:\ ,lastline:⋯,vert:│,trunc:⋯,truncrl:⋯,tpl_vert:│
+# lastline is archaic and not needed, same with truncations
+set fillchars+=diff:\ ,lastline:\ ,vert:│,trunc:\ ,truncrl:\ ,tpl_vert:│
+# on but hidden until visually selected by changing hl-NonText and hl-SpecialKey
+# SpecialKey also used for `:map` but that's ok. Neovim does this better with hl-WhiteSpace
 set list
-set listchars=eol:¬,tab:>\ ,trail:█,extends:»,precedes:«
+# extends/precedes are not in other modern editors, uses hl-NonText
+set listchars=eol:¬,extends:\ ,precedes:\ 
+# visualizing spaces, uses hl-SpecialKey
+set listchars+=space:·,trail:█,nbsp:_,tab:>\ 
+# handled in custom statusline
+set noshowmode
+
+# behaviour - add some modern assumptions
+set splitbelow
+set splitright
+set number
 
 # no wrap but if toggled on use these options
 set nowrap
@@ -47,10 +185,21 @@ set wildmode=noselect:lastused,full
 set wildoptions=exacttext,fuzzy,pum,tagfile
 
 # bars and lines
-set statusline=%<%f\ »\ %l/%L:%c\ »\ %p%%\ »\ %{&ft}
+# ol' oneliner that works:
+#set statusline=\ %{toupper(mode()\ ==\ ''\ ?\ 'b'\ :\ mode())}\ │\ %<%f\ %=\ %-20.(%l/%L\ %c:%{col('$')-1}%)\ %P\ %{&ft}\ 
+var stl = ' '
+stl ..= '%{ toupper(mode() == "" ? "b" : mode())}' # make ^V for visual block mode be one char
+stl ..= ' │ '
+stl ..= '%<%.50f' # relative file path, truncated at > 50 chars long on left side
+stl ..= ' %='
+# left-align 20 chars min. (pad right extra space): line/lines,column:max_col
+stl ..= '%-20.(%l/%L,%c:%{ col("$")-1 }%)'
+stl ..= ' %p%%' # e.g., 0% 43%100%
+stl ..= ' %{&filetype}'
+&statusline = stl
 set titlestring=%{g:full_version}\ -\ %{getcwd()}
 
-# configs go in `./plugin`, e.g., `plugin/vim-fugitive.vim`
+# configs go in `./plugin` and are loaded after this file
 plug#begin()
 Plug 'romainl/vim-qf'
 Plug 'tpope/vim-surround'
@@ -61,6 +210,12 @@ Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-endwise'
 Plug 'tommcdo/vim-lion'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'justinmk/vim-sneak'
+# or `./install{.ps1}` in $MYVIMDIR/plugged/fzf if below fails
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+# provides :Buffers, :GFiles, :Commands, etc.
+Plug 'junegunn/fzf.vim'
 plug#end()
 
 nnoremap <Leader>w <Cmd>update<CR>
@@ -112,11 +267,9 @@ augroup my.augroup.vimrc | autocmd!
   autocmd CmdlineChanged : wildtrigger()
 augroup END
 
-packadd editorconfig
 packadd netrw
 packadd nohlsearch
 packadd hlyank
-packadd comment
 
 def Find(arg: string, _): list<string>
     g:filescache = globpath('.', '**', true, true)
@@ -127,8 +280,8 @@ enddef
 defcompile
 g:filescache = []
 
-colorscheme wildcharm
 set bg=light
+colorscheme wildcharm
 
 hi! PmenuBorder guibg=NONE
 hi! link Pmenu Normal
@@ -141,6 +294,8 @@ hi! PmenuKind guibg=NONE
 hi! PmenuKindSel guibg=#eeeeee
 hi! link PmenuExtra Normal
 hi! PmenuExtraSel guifg=fg guibg=#eeeeee
+# experimental: listchars is on, but hidden until visually selected, like zed/vscode
+hi! NonText guifg=bg
+hi! SpecialKey guifg=bg
 
-# colorscheme play
 # vi: et tw=100 sw=2 sts=-1 fdm=marker

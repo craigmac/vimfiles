@@ -1,6 +1,7 @@
 vim9script
 
-if exists("g:loaded_tmux_navigator") | finish | endif
+# skip if not loaded (probably not installed)
+if !exists('g:loaded_tmux_navigator') | finish | endif
 
 g:tmux_navigator_no_mappings = 1
 g:tmux_navigator_disable_netrw_workaround = 1
@@ -20,5 +21,4 @@ else
   nnoremap <silent> k :<C-u>TmuxNavigateUp<CR>
   nnoremap <silent> l :<C-u>TmuxNavigateRight<CR>
 endif
-
 

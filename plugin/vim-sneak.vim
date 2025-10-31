@@ -1,6 +1,7 @@
 " https://github.com/justinmk/vim-sneak
 
-if exists("g:loaded_sneak_plugin") | finish | endif
+" skip if not loaded (probably not installed)
+if !exists('g:loaded_sneak_plugin') | finish | endif
 
 " label-mode ensures precise jump the first time, no ; or , required.
 " sneak provided operator '[y|d|c|gc]z{object}' is also useful and quicker 'd/' with label-mode on.
