@@ -147,6 +147,8 @@ set listchars=eol:¬,extends:\ ,precedes:\
 set listchars+=space:·,trail:█,nbsp:_,tab:>\ 
 # handled in custom statusline
 set noshowmode
+# allow '[3/782]' rather than default '[3/>99]'
+set maxsearchcount=999
 
 # behaviour - add some modern assumptions
 set splitbelow
@@ -282,21 +284,15 @@ enddef
 defcompile
 g:filescache = []
 
-set bg=light
-colorscheme wildcharm
-
-hi! PmenuBorder guibg=NONE
+colorscheme retrobox
+# make popup windows bg same as Normal and use 'pumborder' instead
 hi! link Pmenu Normal
-hi! PmenuSel guibg=NONE
-hi! PmenuMatch guibg=NONE
-hi! PmenuSel guibg=#eeeeee
-# highlight for match in pmenu AND currently selected line
-hi! PmenuMatchSel guibg=#eeeeee
-hi! PmenuKind guibg=NONE
-hi! PmenuKindSel guibg=#eeeeee
 hi! link PmenuExtra Normal
-hi! PmenuExtraSel guifg=fg guibg=#eeeeee
-# experimental: listchars is on, but hidden until visually selected, like zed/vscode
+hi! PmenuBorder guibg=NONE
+hi! PmenuMatch guibg=NONE
+hi! PmenuKind guibg=NONE
+#hi! PmenuExtraSel guifg=fg guibg=#eeeeee
+# 'listchars' is on, but hidden until visually selected, like zed/vscode
 hi! NonText guifg=bg
 hi! SpecialKey guifg=bg
 
