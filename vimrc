@@ -1,13 +1,14 @@
 vim9script
-
 # neovim-defaults (ish) {{{1
 # TODO: grepprg or -H and -I with 'grep'
 
 filetype plugin indent on
 syntax on
 
-# if we add lua heredoc to a vim script file, highlight it
+# if we add a lua heredoc to a vim script file, highlight it
 g:vimsyn_embed = 'l'
+# highlight neovim specific vim script elements
+g:vimsyn_vim_features = ['nvim']
 
 set autoindent
 set autoread
@@ -71,13 +72,13 @@ set viewoptions+=unix,slash
 set viewoptions-=options
 set viminfo+=!
 set wildmenu
-if v:version > 900 | set wildoptions=pum,tagfile | endif
+set wildoptions=pum,tagfile
 
 packadd matchit
 # nvim ships a runtime lua plugin ran automatically
-if v:version > 900 | packadd editorconfig | endif
+packadd editorconfig
 # nvim has commenting builtin to its _defaults.lua
-if v:version >= 901 | packadd comment | endif
+packadd comment
 
 # if we are in terminal vim, setup changing of cursor shapes
 if !has('gui_running') && &term == 'win32'
@@ -126,6 +127,10 @@ hi! link StatusLineTermNC StatusLineNC
 g:mapleader = ' '
 g:markdown_fenced_languages = ['json', 'bash']
 g:netrw_banner = 0
+# support folding all: functions, heredocs, augroups, vim9 stuff when using `fdm=syntax`
+g:vimsyn_folding = 'acefhiHlmpPrt'
+# allow function, heredoc, and if/do/for folding with `fdm=syntax` in &ft == 'sh'
+g:sh_fold_enabled = 7
 
 # get full vim version like '9.1.1882' for display, e.g., in &titlestring
 var ver = split(string(v:version), '\zs') # => ['9', '0', '1']
@@ -187,19 +192,15 @@ set wildmode=noselect:lastused,full
 set wildoptions=exacttext,fuzzy,pum,tagfile
 
 # bars and lines
-# ol' oneliner that works:
-#set statusline=\ %{toupper(mode()\ ==\ ''\ ?\ 'b'\ :\ mode())}\ │\ %<%f\ %=\ %-20.(%l/%L\ %c:%{col('$')-1}%)\ %P\ %{&ft}\ 
-var stl = ' '
-stl ..= '%{ toupper(mode() == "" ? "b" : mode())}' # make ^V for visual block mode be one char
-stl ..= ' │ '
-stl ..= '%<%.50f' # relative file path, truncated at > 50 chars long on left side
-stl ..= ' %='
-# left-align 20 chars min. (pad right extra space): line/lines,column:max_col
-stl ..= '%-20.(%l/%L,%c:%{ col("$")-1 }%)'
-stl ..= ' %p%%' # e.g., 0% 43%100%
-stl ..= ' %{&filetype}'
-&statusline = stl
-set titlestring=%{g:full_version}\ -\ %{getcwd()}
+&statusline = join([
+  ' %{toupper(mode() == "" ? "b" : mode())}',
+  '│',
+  '%<%.50f',
+  '%=',
+  "%-20.(%l/%L,%c:%{col('$')-1}%)",
+  '%p%%',
+  '%{&filetype}',
+])
 
 # configs go in `./plugin` and are loaded after this file then $MYVIMRDIR/plugged/**/plugin/*.vim
 # files load so don't count on `g:loaded_<plugin>` variables in the `plugin/*.vim` files
@@ -232,7 +233,6 @@ nnoremap <expr> j v:count == 0 ? 'gj' : '<Esc>' .. v:count .. 'j'
 nnoremap <expr> k v:count == 0 ? 'gk' : '<Esc>' .. v:count .. 'k'
 nnoremap <Leader>vp <Cmd>tabedit $MYVIMDIR/plugged<CR>
 nnoremap <Leader>vr <Cmd>tabedit $VIMRUNTIME<CR>
-
 # nvim has :Inspect, we have this
 nnoremap zS :<C-u>echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>
 
@@ -257,8 +257,6 @@ xnoremap . :normal .<CR>
 tnoremap <Esc><Esc> <C-\><C-n>
 
 augroup my.augroup.vimrc | autocmd!
-  au FileType yaml setlocal foldmethod=indent
-  au QuickFixCmdPost * cwindow
   au WinEnter,BufEnter,InsertLeave * setlocal cursorline
   au WinLeave,BufLeave,InsertEnter * setlocal nocursorline
   au BufReadPost * {
@@ -267,8 +265,10 @@ augroup my.augroup.vimrc | autocmd!
       execute "normal! g`\""
     endif
   }
-  # autocmd CmdlineChanged [:\/\?] call wildtrigger()
-  autocmd CmdlineChanged : wildtrigger()
+  au CmdlineChanged [:\/\?] wildtrigger()
+  au FileType vim {
+    setlocal foldmethod=syntax
+  }
 augroup END
 
 packadd netrw
@@ -276,10 +276,10 @@ packadd nohlsearch
 packadd hlyank
 
 def Find(arg: string, _): list<string>
-    g:filescache = globpath('.', '**', true, true)
-    filter(g:filescache, '!isdirectory(v:val)')
-    map(g:filescache, 'fnamemodify(v:val, ":.")')
-    return arg == '' ? g:filescache : matchfuzzy(g:filescache, arg)
+  g:filescache = globpath('.', '**', true, true)
+  filter(g:filescache, '!isdirectory(v:val)')
+  map(g:filescache, 'fnamemodify(v:val, ":.")')
+  return arg == '' ? g:filescache : matchfuzzy(g:filescache, arg)
 enddef
 defcompile
 g:filescache = []
@@ -291,7 +291,6 @@ hi! link PmenuExtra Normal
 hi! PmenuBorder guibg=NONE
 hi! PmenuMatch guibg=NONE
 hi! PmenuKind guibg=NONE
-#hi! PmenuExtraSel guifg=fg guibg=#eeeeee
 # 'listchars' is on, but hidden until visually selected, like zed/vscode
 hi! NonText guifg=bg
 hi! SpecialKey guifg=bg
