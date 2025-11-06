@@ -166,7 +166,7 @@ set breakindent
 set breakindentopt=sbr
 set linebreak
 set nojoinspaces
-set showbreak=↪\ 
+set showbreak=↳\ 
 
 # misc
 set helpheight=0 # messes with 'equalalways
@@ -192,15 +192,20 @@ set wildmode=noselect:lastused,full
 set wildoptions=exacttext,fuzzy,pum,tagfile
 
 # bars and lines
-&statusline = join([
-  ' %{toupper(mode() == "" ? "b" : mode())}',
-  '│',
-  '%<%.50f',
-  '%=',
-  "%-20.(%l/%L,%c:%{col('$')-1}%)",
-  '%p%%',
-  '%{&filetype}',
-])
+# `:h let-heredoc` used to reduce quotes use
+var parts =<< EOF
+ %{toupper(mode() == '' ? 'b' : mode())}
+ │%<%f 
+%{ &modified ? '● ' : '' }
+%{ &readonly ? '⊗ ' : '' }
+%3*%{ &previewwindow ? '[Preview Window] ' : '' }%*
+%=
+%-20.(▼ %l/%L ▶ %c:%{col('$')-1} %)
+%p%%
+%( %{&filetype} %)
+EOF
+# keep exact spacing above rather than add space between each element in list
+&statusline = join(parts, '')
 
 # configs go in `./plugin` and are loaded after this file then $MYVIMRDIR/plugged/**/plugin/*.vim
 # files load so don't count on `g:loaded_<plugin>` variables in the `plugin/*.vim` files
@@ -292,7 +297,24 @@ hi! PmenuBorder guibg=NONE
 hi! PmenuMatch guibg=NONE
 hi! PmenuKind guibg=NONE
 # 'listchars' is on, but hidden until visually selected, like zed/vscode
-hi! NonText guifg=bg
-hi! SpecialKey guifg=bg
+#hi! NonText guifg=bg
+# NOTE: SpecialKey will be hidden in :digraphs and :nmap and other places
+#hi! SpecialKey guifg=bg
 
+# `:h hl-User1..9`
+hi! User1 guifg=Black ctermfg=232
+# red
+hi! User2 guifg=White guibg=Red
+# green
+hi! User3 guifg=Black guibg=Green
+# yellow
+hi! User4 guifg=Black guibg=Yellow
+# blue
+hi! User5 guifg=White guibg=Blue
+# magenta
+hi! User6 guifg=Black guibg=Magenta
+# cyan
+hi! User7 guifg=Black guibg=Cyan
+# white
+hi! User8 guifg=White ctermfg=231
 # vi: et tw=100 sw=2 sts=-1 fdm=marker
