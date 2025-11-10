@@ -135,7 +135,7 @@ g:sh_fold_enabled = 7
 # get full vim version like '9.1.1882' for display, e.g., in &titlestring
 var ver = split(string(v:version), '\zs') # => ['9', '0', '1']
 var patch = strpart(string(v:versionlong), 3)
-g:full_version = printf("%s.%s.%s", ver[0], ver[-1], patch)
+g:fullversion = printf("%s.%s.%s", ver[0], ver[-1], patch)
 
 # UI/Special Chars
 &guifont = has('win64') ? 'Adwaita_Mono:h14:cANSI:qDRAFT' : 'Adwaita Mono 14'
@@ -154,6 +154,17 @@ set listchars+=space:·,trail:█,nbsp:_,tab:>\
 set noshowmode
 # allow '[3/782]' rather than default '[3/>99]'
 set maxsearchcount=999
+# show full version including patch number in title
+var titleparts =<< EOF
+%<%(%{getenv('USERNAME')}@%)
+%(%{ hostname()}%)
+%=
+%( %{getcwd()}%)
+%=
+%( v. %{% exists('g:fullversion') ? g:fullversion : v:versionlong %}%)
+%=
+EOF
+&titlestring = join(titleparts, '')
 
 # behaviour - add some modern assumptions
 set splitbelow
@@ -317,4 +328,9 @@ hi! User6 guifg=Black guibg=Magenta
 hi! User7 guifg=Black guibg=Cyan
 # white
 hi! User8 guifg=White ctermfg=231
+
+# 9.2 patches (coming in next official release):
+#if has('patch-9.1.1900')
+#endif
+
 # vi: et tw=100 sw=2 sts=-1 fdm=marker
