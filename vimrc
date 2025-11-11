@@ -81,7 +81,7 @@ packadd editorconfig
 packadd comment
 
 # if we are in terminal vim, setup changing of cursor shapes
-if !has('gui_running') && &term == 'win32'
+if !has('gui_running')
   # Use DECSCUSR [DEC (S)et (CU)r(S)o(R)] style escape sequences
   &t_SI = "\e[6 q"    # non-blinking bar
   &t_SR = "\e[4 q"    # non-blinking underline
@@ -143,9 +143,6 @@ g:fullversion = printf("%s.%s.%s", ver[0], ver[-1], patch)
 set fillchars=eob:\ ,fold:\ ,foldopen:▼,foldclose:▶,foldsep:\ ,foldinner:\ 
 # lastline is archaic and not needed, same with truncations
 set fillchars+=diff:\ ,lastline:\ ,vert:│,trunc:\ ,truncrl:\ ,tpl_vert:│
-# on but hidden until visually selected by changing hl-NonText and hl-SpecialKey
-# SpecialKey also used for `:map` but that's ok. Neovim does this better with hl-WhiteSpace
-set list
 # extends/precedes are not in other modern editors, uses hl-NonText
 set listchars=eol:¬,extends:\ ,precedes:\ 
 # visualizing spaces, uses hl-SpecialKey
@@ -192,6 +189,7 @@ set completeopt=menuone,popup,fuzzy,noselect
 set completefuzzycollect=keyword,files,whole_line
 set completepopup=highlight:Pmenu,border:single,shadow:on
 set pumborder=round
+# value is one of those `:h option-value-function` options
 set findfunc=Find
 set ignorecase
 set pumheight=10
@@ -285,6 +283,8 @@ augroup my.augroup.vimrc | autocmd!
   au FileType vim {
     setlocal foldmethod=syntax
   }
+  #au ColorScheme default echomsg 'Default colorscheme set.'
+  au ColorScheme default call SetMyColors()
 augroup END
 
 packadd netrw
@@ -300,7 +300,7 @@ enddef
 defcompile
 g:filescache = []
 
-colorscheme retrobox
+# colorscheme retrobox
 # make popup windows bg same as Normal and use 'pumborder' instead
 hi! link Pmenu Normal
 hi! link PmenuExtra Normal
@@ -332,5 +332,32 @@ hi! User8 guifg=White ctermfg=231
 # 9.2 patches (coming in next official release):
 #if has('patch-9.1.1900')
 #endif
+
+# - bc vim doesn't set hl-Normal, regardless of &bg value, doing a
+#   light/dark 'yob' unimpaired toggle requires hooking into OptionSet
+#   to call this and adjust colors or it will be unreadable
+# - use as general ColorScheme * callback, branching on `<amatch>`
+#   to set colors for specific colorschemes
+# TODO: do we need to pass <amatch> and accept an argument here or can
+# we just reference <amatch> inside this function?
+def g:SetMyColors()
+  if &termguicolors
+    if &bg == 'light'
+      # this is what a clean `gvim.exe` (no config) gives you
+      hi! Normal guibg=Grey95
+      hi! LineNr guifg=Grey50
+      hi! CursorLineNr guifg=Grey0
+    else
+      hi! Normal guibg=Grey0 guifg=Grey95
+    endif
+  else
+    # no tgc
+  endif
+enddef
+
+# no hl-Normal is set is set for default colorscheme
+# assumes light background, so if you start a noconfig gvim and do `:set bg=dark`
+# the hl-Normal guibg and guifg don't change, so it gets hard to see
+g:SetMyColors()
 
 # vi: et tw=100 sw=2 sts=-1 fdm=marker
