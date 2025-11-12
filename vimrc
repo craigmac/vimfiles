@@ -10,6 +10,14 @@ g:vimsyn_embed = 'l'
 # highlight neovim specific vim script elements
 g:vimsyn_vim_features = ['nvim']
 
+# python optional highlighting preferences
+g:python_no_builtin_highlight = 1
+g:python_no_doctest_highlight = 1
+g:python_no_doctest_code_highlight = 1
+g:python_no_exception_highlight = 1
+g:python_no_number_highlight = 1
+g:python_space_error_highlight = 1
+
 set autoindent
 set autoread
 set background=dark
@@ -147,6 +155,8 @@ set fillchars+=diff:\ ,lastline:\ ,vert:│,trunc:\ ,truncrl:\ ,tpl_vert:│
 set listchars=eol:¬,extends:\ ,precedes:\ 
 # visualizing spaces, uses hl-SpecialKey
 set listchars+=space:·,trail:█,nbsp:_,tab:>\ 
+# 1 ensures we never move onto the 'extends' `&listchars` when nowrap is on
+set sidescrolloff=1
 # handled in custom statusline
 set noshowmode
 # allow '[3/782]' rather than default '[3/>99]'
@@ -248,7 +258,7 @@ nnoremap <expr> k v:count == 0 ? 'gk' : '<Esc>' .. v:count .. 'k'
 nnoremap <Leader>vp <Cmd>tabedit $MYVIMDIR/plugged<CR>
 nnoremap <Leader>vr <Cmd>tabedit $VIMRUNTIME<CR>
 # nvim has :Inspect, we have this
-nnoremap zS :<C-u>echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>
+nmap zS :<C-u>echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>
 
 # this trick only works in vim
 cnoremap w!! w !sudo tee > /dev/null %
@@ -268,7 +278,7 @@ xnoremap <Leader>P "+P
 
 # repeat last command on visual lines
 xnoremap . :normal .<CR>
-tnoremap <Esc><Esc> <C-\><C-n>
+tmap <Esc><Esc> <C-\><C-n>
 
 augroup my.augroup.vimrc | autocmd!
   au WinEnter,BufEnter,InsertLeave * setlocal cursorline
@@ -302,11 +312,6 @@ g:filescache = []
 
 # colorscheme retrobox
 # make popup windows bg same as Normal and use 'pumborder' instead
-hi! link Pmenu Normal
-hi! link PmenuExtra Normal
-hi! PmenuBorder guibg=NONE
-hi! PmenuMatch guibg=NONE
-hi! PmenuKind guibg=NONE
 # 'listchars' is on, but hidden until visually selected, like zed/vscode
 #hi! NonText guifg=bg
 # NOTE: SpecialKey will be hidden in :digraphs and :nmap and other places
@@ -333,26 +338,48 @@ hi! User8 guifg=White ctermfg=231
 #if has('patch-9.1.1900')
 #endif
 
-# - bc vim doesn't set hl-Normal, regardless of &bg value, doing a
-#   light/dark 'yob' unimpaired toggle requires hooking into OptionSet
-#   to call this and adjust colors or it will be unreadable
-# - use as general ColorScheme * callback, branching on `<amatch>`
-#   to set colors for specific colorschemes
-# TODO: do we need to pass <amatch> and accept an argument here or can
-# we just reference <amatch> inside this function?
+# colors for default colorscheme with set bg=dark and termguicolors
 def g:SetMyColors()
-  if &termguicolors
-    if &bg == 'light'
-      # this is what a clean `gvim.exe` (no config) gives you
-      hi! Normal guibg=Grey95
-      hi! LineNr guifg=Grey50
-      hi! CursorLineNr guifg=Grey0
-    else
-      hi! Normal guibg=Grey0 guifg=Grey95
-    endif
-  else
-    # no tgc
-  endif
+  # increase and decrease brightness of pure black/white by 10%
+  # set Normal bg/fg first so we can use 'bg' and 'fg' to refer to them
+  hi! Normal guibg=Grey10 guifg=Grey90
+  hi! CursorLine guibg=Grey20
+  hi! CursorLineNr gui=bold guifg=Grey100
+  hi! LineNr guifg=Grey50
+  hi! LineNr guifg=Grey50
+  hi! VertSplit gui=NONE
+  # still in blue family (default is 'Blue') better contrast against bg
+  hi! NonText guifg=skyblue
+  # default is 'reverse', let's make it &bg independent
+  hi! IncSearch gui=reverse guifg=fg guibg=bg
+  # links 
+  hi! link SpecialKey NonText
+  hi! link StatusLineTerm     StatusLine
+  hi! link StatusLineTermNC   StatusLineNC
+  hi! link TabPanel           Normal
+  hi! link TabPanelFill       Normal
+  hi! link Terminal           Normal
+  hi! link MessageWindow      Pmenu
+  hi! link PopupNotification  Normal
+  hi! link PopupSelected      PmenuSel
+  hi! link PreInsert          NonText
+  hi! link CurSearch          IncSearch
+  # Pmenu
+  hi! Pmenu guifg=NONE guibg=bg
+  hi! PmenuSel guibg=Grey20
+  hi! link PmenuBorder        Pmenu
+  # addding colour here is too much, must be subtle bc it's being
+  # used constantly when 'autocomplete' is on
+  hi! PmenuMatch gui=bold guifg=Grey100
+  hi! PmenuMatchSel gui=bold guifg=Grey100 guibg=NONE
+  hi! link PmenuKind     Pmenu
+  hi! link PmenuKindSel  PmenuSel
+  hi! link PmenuExtra    Pmenu
+  hi! link PmenuExtraSel PmenuSel
+  hi! PmenuSbar guibg=Grey
+  hi! PmenuThumb guibg=White
+  hi! PmenuShadow guifg=DarkGrey guibg=Grey0
+
 enddef
 
 # no hl-Normal is set is set for default colorscheme

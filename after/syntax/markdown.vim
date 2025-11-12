@@ -1,6 +1,5 @@
-" File: after/syntax/markdown.vim
-" Author: C.D. MacEachern
-" Description: Additional liquid tags syntax groups for vim-markdown
+" syntax matching and highlighting of 'liquid' tags
+" embedded in markdown file: https://jekyllrb.com/docs/liquid/
 
 syntax match liquidTag "{%\s\+.\+_.\+\s\+%}"
 syntax match markdownInlineCode "`[^`]\+`"
