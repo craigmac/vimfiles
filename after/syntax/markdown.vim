@@ -7,4 +7,3 @@ syntax match markdownInlineCode "`[^`]\+`"
 highlight! link liquidTag String
 highlight! link markdownInlineCode String
 
-
