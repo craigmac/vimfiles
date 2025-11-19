@@ -1,11 +1,5 @@
-undodir/
-spell/
-doc/
-tmp/
+cache/
 .netrwhist
+doc/
 plugged/
 pack/
-cache/
-.local/
-.cache/
-TODO\*
