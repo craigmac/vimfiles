@@ -1,0 +1,28 @@
+" debian stable vim-tiny 9.1.0697, no :help, no :eval, no :syntax, just pain
+set nocompatible
+filetype plugin on
+
+set autoread
+set autoindent
+set backspace=indent,eol,start
+set complete-=i
+set hidden
+set ignorecase smartcase
+set laststatus=2
+set path-=/usr/include
+set path+=**20
+set ruler
+set wildmenu
+set wildoptions=pum,tagfile
+
+nnoremap <Space>w :update<CR>
+nnoremap <Space><Space> :b #<CR>
+nnoremap <Space><CR> :<C-u>so %<CR>
+nnoremap <Space>ff :find **/*
+nnoremap <Space>fv :<C-u>vert sfind **/*
+nnoremap <Space>fs :sfind **/*
+nnoremap <Esc>l :wincmd l<CR>
+nnoremap <Esc>h :wincmd h<CR>
+nnoremap <Esc>j :wincmd j<CR>
+nnoremap <Esc>k :wincmd k<CR>
+

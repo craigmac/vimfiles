@@ -1,53 +1,59 @@
 vim9script
-# neovim-defaults (ish) {{{1
-# TODO: grepprg or -H and -I with 'grep'
+# config for Debian stable `apt get install vim-nox` and higher
 
-filetype plugin indent on
-syntax on
+# add neovim defaults {{{1
+
+# must be set now, see `:h go-M` for why
+set guioptions-=M
+
+# source vim defaults first, thus ensuring nvim defaults override them
+# (cf. `Q` in defaults.vim is not the same as `Q` in nvim's `_defaults.lua`)
+source $VIMRUNTIME/defaults.vim
 
 # if we add a lua heredoc to a vim script file, highlight it
 g:vimsyn_embed = 'l'
 # highlight neovim specific vim script elements
 g:vimsyn_vim_features = ['nvim']
 
-# python optional highlighting preferences
-g:python_no_builtin_highlight = 1
-g:python_no_doctest_highlight = 1
-g:python_no_doctest_code_highlight = 1
-g:python_no_exception_highlight = 1
-g:python_no_number_highlight = 1
-g:python_space_error_highlight = 1
+# honour env vars for these first and if not there, setup nvim defaults
+#if !getenv('XDG_CONFIG_HOME')
+  # exe "setenv('XDG_CONFIG_HOME', " .. has('win32') ? getenv('LOCALAPPDATA') :
+  #    getenv('HOME')
+  #  var loc = has('win32') ? getenv('LOCALAPPDATA') : getenv('HOME')
+  # does execute work with printf?
+  #exe printf("setenv('XDG_CONFIG_HOME', %s)", loc)
+#endif
+
+
+#&undodir = stdpath_data .. '/undo//'
+#&directory = stdpath_data .. '/swap//'
+#&backupdir = stdpath_data .. '/backup//'
+
+# create missing directories
+#if !isdirectory(&undodir) |  call mkdir(&undodir, 'p') | endif
+#if !isdirectory(&directory) | call mkdir(&directory, 'p') | endif
+#if !isdirectory(&backupdir) | call mkdir(&backupdir, 'p') | endif
 
 set autoindent
 set autoread
-set background=dark
-set backspace=indent,eol,start
 set belloff=all
 set comments+=fb:•
 set commentstring=
 set complete-=i
 set define=''
 set diffopt=internal,filler,closeoff,linematch:60
-# adjust this on win32, no handy Nvim stdpath() function available in Vim
-if !has('win32')
-  if !isdirectory(expand('$HOME') .. '/.vim/cache/swap')
-    call mkdir(expand('$HOME') .. '/.vim/cache/swap', 'p')
-  endif
-endif
-&directory = expand('$HOME') .. '/.vim/cache/swap/' .. '/'
+# vim's defaults.vim sets to 'truncate'
 set display=lastline
 set encoding=utf-8
 set exrc
 set fillchars+=vert:│,fold:·
 set formatoptions=tcqj
-if has('win64') | set isfname-=: | endif
+if has('win32') | set isfname-=: | endif
 if executable('rg') | set grepprg=rg\ --vimgrep\ $* | endif
 set hidden
 set history=10000
 set hlsearch
-set incsearch
 set include=''
-set langnoremap
 set laststatus=2
 set modelines=5
 set mouse=nvi
@@ -58,34 +64,35 @@ set nolangremap
 set nostartofline
 set noswapfile
 set nrformats=bin,hex
-if v:version > 900 | set switchbuf=uselast | endif
+set switchbuf=uselast
 set path-=/usr/include
-set ruler
 set sessionoptions+=unix,slash
 set sessionoptions-=options
 set shortmess+=CF
 set shortmess-=S
-set showcmd
 set sidescroll=1
 set smarttab
 set tabpagemax=50
 set tags=./tags;,tags
-# turned on in nvim if term emulator detected capable of handling truecolor
+# turned on in nvim if term emulator detected capable of handling truecolor,
+# which most are now, so bet on it rather than recreating detection logic here
 set termguicolors
-set ttimeout
+# vim's defaults.vim sets to 100
 set ttimeoutlen=50
 set ttyfast
-set undodir=~/.vim/cache/undo
 set viewoptions+=unix,slash
 set viewoptions-=options
 set viminfo+=!
 set wildmenu
 set wildoptions=pum,tagfile
 
+# nvim loads this plugin by default
 packadd matchit
-# nvim ships a runtime lua plugin ran automatically
+# nvim ships a runtime lua plugin ran automatically. vim added this later.
+# don't add colorcolumn at textwidth + 1 by default, nvim doesn't do this
+g:EditorConfig_max_line_indicator = 'none'
 packadd editorconfig
-# nvim has commenting builtin to its _defaults.lua
+# nvim has commenting builtin to its _defaults.lua. vim added this later.
 packadd comment
 
 # if we are in terminal vim, setup changing of cursor shapes
@@ -100,25 +107,24 @@ endif
 
 nnoremap Y y$
 nnoremap <C-L> <Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>
-inoremap <C-U> <C-G>u<C-U>
 inoremap <C-W> <C-G>u<C-W>
 xnoremap * y/\V<C-R>"<CR>
 xnoremap # y?\V<C-R>"<CR>
 nnoremap & :&&<CR>
-# rerun last macro with `Q`, unless in Visual/Replace modes
-nnoremap <expr> Q mode() ==# 'V' ? ':normal! @<C-R>reg_recorded()<CR><CR>' : 'Q'
-# in linewise Visual mode, execute macro on each selected line, like @.
-xnoremap <expr> @ mode() ==# 'V' ? ':normal! @<C-R>=reg_recorded()<CR><CR>' : 'Q'
+# TODO: defaults.vim uses Q for alias to gq (format)
+# and nvim uses it for repeating last register recorded, but
+# in vim there is no reg_recorded() function, so custom logic might be needed
+#nnoremap Q <Cmd>normal! @<C-R>reg_recorded()<CR><CR>
 
 augroup my.nvim.defaults | au!
   # equivalent to nvim's TermOpen event
   au TerminalWinOpen * {
-    setl nomodifiable
-    setl nonumber
-    setl norelativenumber
-    setl nolist
-    setl signcolumn=no
-    setl foldcolumn=0
+    setlocal nomodifiable
+    setlocal nonumber
+    setlocal norelativenumber
+    setlocal nolist
+    setlocal signcolumn=no
+    setlocal foldcolumn=0
   }
   # emulate nvim's gO in help files using vim runtime plugin for it
   au FileType help {
@@ -132,51 +138,99 @@ hi! link StatusLineTerm StatusLine
 hi! link StatusLineTermNC StatusLineNC
 # }}}
 
-g:mapleader = ' '
-g:markdown_fenced_languages = ['json', 'bash']
+g:mapleader = " "
 g:netrw_banner = 0
+g:markdown_fenced_languages = [ 'vim', 'lua', 'sh=bash' ]
 # support folding all: functions, heredocs, augroups, vim9 stuff when using `fdm=syntax`
 g:vimsyn_folding = 'acefhiHlmpPrt'
+# don't highlight strings inside of comments in vim filetypes
+g:vimsyn_comment_strings = false
 # allow function, heredoc, and if/do/for folding with `fdm=syntax` in &ft == 'sh'
 g:sh_fold_enabled = 7
 
 # get full vim version like '9.1.1882' for display, e.g., in &titlestring
 var ver = split(string(v:version), '\zs') # => ['9', '0', '1']
 var patch = strpart(string(v:versionlong), 3)
-g:fullversion = printf("%s.%s.%s", ver[0], ver[-1], patch)
+g:full_version = printf("%s.%s.%s", ver[0], ver[-1], patch)
+g:titlestring = printf('%s %s [%s]', v:progname, g:full_version, getcwd())
 
-# UI/Special Chars
-&guifont = has('win64') ? 'Adwaita_Mono:h14:cANSI:qDRAFT' : 'Adwaita Mono 14'
+# UI/special characters
+if has('win32') && !has('gui_running')
+  # ref. `:h term.txt`
+  if &term ==# 'win32'
+    # NOTE: Windows native huge build vim/gvim does not come with '+termresponse' feature builtin
+    # so there's no querying of the terminal capabilities possible, like these:
+    # (R)equest terminal (V)ersion string
+    # &t_RV = 
+    # (R)equest terminal (B)ackground/(F)oreground colour
+    # &t_RB = 
+    # &t_RF = 
+
+    # Windows builtin terminfo when `&term == 'win32'` default is `set bg=dark`
+    # setting it to this will try to redetect it rather than autoset bg to dark
+    #set background=light
+    set background=light
+
+    # add more terminal capabilities that aren't in builtin 'win32' terminfo
+    # (B)racketed paste (E)nable/(D)isable
+    &t_BE = "\e[?2004h"
+    &t_BD = "\e[?200l"
+    # (P)aste (S)tart/(E)nd markers
+    &t_PS = "\e[200~"
+    &t_PE = "\e[201~"
+    # (f)ocus event tracking (e)nable/(d)isable
+    # if garbage shows up on screen when Vim starts this isn't supported
+    &t_fe = "\e[?1004h"
+    &t_fd = "\e[?1004l"
+    execute "set <FocusGained>=\e[I"
+    execute "set <FocusLost>=\e[O"
+    # set (t)itle (s)tring
+    # &t_ts =
+    # (f)inished title (s)tring
+    # &t_fs = 
+  endif
+endif
+
+&guifont = has('win32') ? 'Adwaita_Mono:h14:cANSI:qDRAFT' : 'Adwaita Mono 14'
 # eob not in modern editors and `set number` makes it irrelevant
-set fillchars=eob:\ ,fold:\ ,foldopen:▼,foldclose:▶,foldsep:\ ,foldinner:\ 
+set fillchars=eob:\ ,fold:\ ,foldinner:\ ,foldopen:▼,foldclose:▶,foldsep:\ 
 # lastline is archaic and not needed, same with truncations
-set fillchars+=diff:\ ,lastline:\ ,vert:│,trunc:\ ,truncrl:\ ,tpl_vert:│
+set fillchars+=diff:\ ,lastline:\ ,vert:│,trunc:\ ,truncrl:\ 
+if has('patch-9.1.1883') | set fillchars+=tpl_vert:│ | endif
 # extends/precedes are not in other modern editors, uses hl-NonText
 set listchars=eol:¬,extends:\ ,precedes:\ 
 # visualizing spaces, uses hl-SpecialKey
 set listchars+=space:·,trail:█,nbsp:_,tab:>\ 
-# 1 ensures we never move onto the 'extends' `&listchars` when nowrap is on
-set sidescrolloff=1
-# handled in custom statusline
-set noshowmode
 # allow '[3/782]' rather than default '[3/>99]'
 set maxsearchcount=999
-# show full version including patch number in title
-var titleparts =<< EOF
-%<%(%{getenv('USERNAME')}@%)
-%(%{ hostname()}%)
-%=
-%( %{getcwd()}%)
-%=
-%( v. %{% exists('g:fullversion') ? g:fullversion : v:versionlong %}%)
-%=
-EOF
-&titlestring = join(titleparts, '')
+# handled in custom statusline
+set noshowmode
+set number
+set pumborder=round
 
 # behaviour - add some modern assumptions
 set splitbelow
 set splitright
-set number
+set visualbell
+
+# misc
+set helpheight=0 # default of 20 messes with 'equalalways
+
+# completion/finding
+set autocomplete
+set complete=o^10,.^10,w^5,b^5
+set completeopt=menuone,popup,fuzzy,noselect
+set completepopup=highlight:Pmenu,border:single,shadow:on
+set completefuzzycollect=keyword,files,whole_line
+set findfunc=Find
+set ignorecase
+set pumheight=10
+set smartcase
+set wildcharm=<C-z>
+set wildignore+=*.swp,*~,*.bak,*.o,*.obj,.DS_Store,.netrwh
+set wildignore+=.git/,.node_modules/,.cache/,tmp/
+set wildmode=noselect:lastused,full
+set wildoptions=fuzzy,pum,tagfile,exacttext
 
 # no wrap but if toggled on use these options
 set nowrap
@@ -186,89 +240,53 @@ set linebreak
 set nojoinspaces
 set showbreak=↳\ 
 
-# misc
-set helpheight=0 # messes with 'equalalways
-set smoothscroll
-set undofile
+# editing
+set spelloptions=camel
+set spellsuggest=fast,5,timeout:1000
 set virtualedit=block
 
-# completion/finding
-set autocomplete
-set complete=o^10,.^10,w^5,b^5
-set completeopt=menuone,popup,fuzzy,noselect
-set completefuzzycollect=keyword,files,whole_line
-set completepopup=highlight:Pmenu,border:single,shadow:on
-set pumborder=round
-# value is one of those `:h option-value-function` options
-set findfunc=Find
-set ignorecase
-set pumheight=10
-set smartcase
-set wildcharm=<C-z>
-set wildignore+=*.swp,*~,*.bak,*.o,*.obj,.DS_Store,.netrwh
-set wildignore+=.git/,.node_modules/,.cache/,tmp/
-set wildmode=noselect:lastused,full
-set wildoptions=exacttext,fuzzy,pum,tagfile
+# startup/runtime behaviour
+set exrc
+set diffopt+=followwrap,algorithm:minimal
+set sidescrolloff=2
+set tabclose=uselast
+set undofile
+set smoothscroll
 
 # bars and lines
-# `:h let-heredoc` used to reduce quotes use
-var parts =<< EOF
- %{toupper(mode() == '' ? 'b' : mode())}
- │%<%f 
-%{ &modified ? '● ' : '' }
-%{ &readonly ? '⊗ ' : '' }
-%3*%{ &previewwindow ? '[Preview Window] ' : '' }%*
-%=
-%-20.(▼ %l/%L ▶ %c:%{col('$')-1} %)
-%p%%
-%( %{&filetype} %)
-EOF
-# keep exact spacing above rather than add space between each element in list
+var parts = [
+  " %{toupper(mode() == '' ? 'b' : mode())}",
+  " │%<%f ",
+  "%{ &modified ? '● ' : '' }",
+  "%{ &readonly ? '⊗ ' : '' }",
+  "%3*%{ &previewwindow ? '[Preview Window] ' : '' }%*",
+  "%=",
+  "%-20.(▼ %l/%L ▶ %c:%{col('$')-1} %)",
+  "%p%%",
+  "%( %{&filetype} %)"
+]
 &statusline = join(parts, '')
 
-# configs go in `./plugin` and are loaded after this file then $MYVIMRDIR/plugged/**/plugin/*.vim
-# files load so don't count on `g:loaded_<plugin>` variables in the `plugin/*.vim` files
-plug#begin()
-Plug 'romainl/vim-qf'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-endwise'
-Plug 'tommcdo/vim-lion'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'justinmk/vim-sneak'
-# or `./install{.ps1}` in $MYVIMDIR/plugged/fzf if below fails
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-# provides :Buffers, :GFiles, :Commands, etc.
-Plug 'junegunn/fzf.vim'
-plug#end()
-
+# keymappings
 nnoremap <Leader>w <Cmd>update<CR>
-nnoremap <Leader>, <Cmd>edit $MYVIMRC<CR>
 nnoremap <Leader><Space> <Cmd>buffer #<CR>
-nnoremap <Leader>b :<C-u>buffer<Space>
-nnoremap <Leader>f :<C-u>find<Space>
 nnoremap <Leader><CR> <Cmd>source %<CR>
 nnoremap <Leader>z <Cmd>wincmd _ <Bar> wincmd \|<CR>
 nnoremap <expr> <Leader>e exists('g:loaded_netrw') ? exists('w:netrw_rexlocal') ? '<Cmd>Rexplore<CR>' : '<Cmd>Explore<CR>' : '<Cmd>Explore<CR>'
-nnoremap <expr> j v:count == 0 ? 'gj' : '<Esc>' .. v:count .. 'j'
-nnoremap <expr> k v:count == 0 ? 'gk' : '<Esc>' .. v:count .. 'k'
+nnoremap <Leader>, <Cmd>edit $MYVIMRC<CR>
+nnoremap <Leader>f :<C-u>find **/*
+nnoremap <Leader>b :<C-u>buffer <C-z><S-Tab>
+nnoremap zS <Cmd>echo synIDattr(synID(line("."), col("."), 1), "name")<CR>
+nnoremap <expr> j (&wrap && v:count == 0) ? 'gj' : 'j'
+nnoremap <expr> k (&wrap && v:count == 0) ? 'gk' : 'k'
 nnoremap <Leader>vp <Cmd>tabedit $MYVIMDIR/plugged<CR>
 nnoremap <Leader>vr <Cmd>tabedit $VIMRUNTIME<CR>
-# nvim has :Inspect, we have this
-nmap zS :<C-u>echo synIDattr(synID(line('.'), col('.'), 1), 'name')<CR>
 
-# this trick only works in vim
-cnoremap w!! w !sudo tee > /dev/null %
-cnoremap <expr> <C-p> wildmenumode() ? '<C-p>' : '<Up>'
-cnoremap <expr> <C-n> wildmenumode() ? '<C-n>' : '<Down>'
-# retain cmdline history keys Up/Down even if wildmenu open
-cnoremap <expr> <Up> wildmenumode() ? '<C-e><Up>' : '<Up>'
-cnoremap <expr> <Down> wildmenumode() ? '<C-e><Down>' : '<Down>'
+# `n` goes forward, `N` goes backwards - regardless of search start direction
+nnoremap <expr> n 'Nn'[v:searchforward]
+nnoremap <expr> N 'nN'[v:searchforward]
 
-# specifically target the system clipboard
+# explicitly target the system clipboard (gvimrc overrides to `"*` versions)
 nnoremap <Leader>y "+y
 xnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
@@ -276,30 +294,48 @@ xnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
 xnoremap <Leader>P "+P
 
+# moving around with <A-hjkl>
+nnoremap h <Cmd>wincmd h<CR>
+nnoremap j <Cmd>wincmd j<CR>
+nnoremap k <Cmd>wincmd k<CR>
+nnoremap l <Cmd>wincmd l<CR>
+tnoremap h <C-\><C-n><Cmd>wincmd h<CR>
+tnoremap j <C-\><C-n><Cmd>wincmd j<CR>
+tnoremap k <C-\><C-n><Cmd>wincmd k<CR>
+tnoremap l <C-\><C-n><Cmd>wincmd l<CR>
+
+cnoremap w!! w !sudo tee > /dev/null %
+cnoremap <expr> <C-p> wildmenumode() ? '<C-p>' : '<Up>'
+cnoremap <expr> <C-n> wildmenumode() ? '<C-n>' : '<Down>'
+# retain cmdline history keys Up/Down even if wildmenu open
+cnoremap <expr> <Up> wildmenumode() ? '<C-e><Up>' : '<Up>'
+cnoremap <expr> <Down> wildmenumode() ? '<C-e><Down>' : '<Down>'
+
+tnoremap <C-]><C-]> <C-\><C-n>
+tnoremap <Esc><Esc> <C-\><C-n>
+
 # repeat last command on visual lines
 xnoremap . :normal .<CR>
-tmap <Esc><Esc> <C-\><C-n>
 
 augroup my.augroup.vimrc | autocmd!
   au WinEnter,BufEnter,InsertLeave * setlocal cursorline
   au WinLeave,BufLeave,InsertEnter * setlocal nocursorline
-  au BufReadPost * {
-    var line = line("'\"")
-    if line >= 1 && line <= line("$") && &filetype !~# 'commit' && index(['xxd', 'gitrebase', 'tutor'], &filetype) == -1
-      execute "normal! g`\""
+
+  # autocompletion on cmdline and searches
+  au CmdlineChanged [:\/\?] wildtrigger()
+
+  # create missing dirs on save, like neovim's :w ++p
+  au BufWritePre * {
+    if &modifiable && !isdirectory(expand("%:p:h"))
+      mkdir(expand("%:p:h"), "p")
     endif
   }
-  au CmdlineChanged [:\/\?] wildtrigger()
-  au FileType vim {
-    setlocal foldmethod=syntax
-  }
-  #au ColorScheme default echomsg 'Default colorscheme set.'
-  au ColorScheme default call SetMyColors()
 augroup END
 
-packadd netrw
-packadd nohlsearch
-packadd hlyank
+def g:FindGitFiles(cmdarg: string, cmdcomplete: bool): any
+  var fnames = systemlist('git ls-files')
+  return fnames->filter((idx, val) => val =~? cmdarg)
+enddef
 
 def Find(arg: string, _): list<string>
   g:filescache = globpath('.', '**', true, true)
@@ -310,81 +346,25 @@ enddef
 defcompile
 g:filescache = []
 
-# colorscheme retrobox
-# make popup windows bg same as Normal and use 'pumborder' instead
-# 'listchars' is on, but hidden until visually selected, like zed/vscode
-#hi! NonText guifg=bg
-# NOTE: SpecialKey will be hidden in :digraphs and :nmap and other places
-#hi! SpecialKey guifg=bg
+packadd netrw
+packadd nohlsearch
+packadd hlyank
 
-# `:h hl-User1..9`
+# make popup windows bg same as Normal and use 'pumborder' instead
+hi! link Pmenu Normal
+hi! link PmenuExtra Normal
+hi! PmenuBorder guibg=NONE
+hi! PmenuMatch guibg=NONE
+hi! PmenuKind guibg=NONE
+
+# `:h hl-User1..9` choose colours that work against `hl-StatusLine`
 hi! User1 guifg=Black ctermfg=232
-# red
 hi! User2 guifg=White guibg=Red
-# green
 hi! User3 guifg=Black guibg=Green
-# yellow
 hi! User4 guifg=Black guibg=Yellow
-# blue
 hi! User5 guifg=White guibg=Blue
-# magenta
 hi! User6 guifg=Black guibg=Magenta
-# cyan
 hi! User7 guifg=Black guibg=Cyan
-# white
 hi! User8 guifg=White ctermfg=231
 
-# 9.2 patches (coming in next official release):
-#if has('patch-9.1.1900')
-#endif
-
-# colors for default colorscheme with set bg=dark and termguicolors
-def g:SetMyColors()
-  # increase and decrease brightness of pure black/white by 10%
-  # set Normal bg/fg first so we can use 'bg' and 'fg' to refer to them
-  hi! Normal guibg=Grey10 guifg=Grey90
-  hi! CursorLine guibg=Grey20
-  hi! CursorLineNr gui=bold guifg=Grey100
-  hi! LineNr guifg=Grey50
-  hi! LineNr guifg=Grey50
-  hi! VertSplit gui=NONE
-  # still in blue family (default is 'Blue') better contrast against bg
-  hi! NonText guifg=skyblue
-  # default is 'reverse', let's make it &bg independent
-  hi! IncSearch gui=reverse guifg=fg guibg=bg
-  # links 
-  hi! link SpecialKey NonText
-  hi! link StatusLineTerm     StatusLine
-  hi! link StatusLineTermNC   StatusLineNC
-  hi! link TabPanel           Normal
-  hi! link TabPanelFill       Normal
-  hi! link Terminal           Normal
-  hi! link MessageWindow      Pmenu
-  hi! link PopupNotification  Normal
-  hi! link PopupSelected      PmenuSel
-  hi! link PreInsert          NonText
-  hi! link CurSearch          IncSearch
-  # Pmenu
-  hi! Pmenu guifg=NONE guibg=bg
-  hi! PmenuSel guibg=Grey20
-  hi! link PmenuBorder        Pmenu
-  # addding colour here is too much, must be subtle bc it's being
-  # used constantly when 'autocomplete' is on
-  hi! PmenuMatch gui=bold guifg=Grey100
-  hi! PmenuMatchSel gui=bold guifg=Grey100 guibg=NONE
-  hi! link PmenuKind     Pmenu
-  hi! link PmenuKindSel  PmenuSel
-  hi! link PmenuExtra    Pmenu
-  hi! link PmenuExtraSel PmenuSel
-  hi! PmenuSbar guibg=Grey
-  hi! PmenuThumb guibg=White
-  hi! PmenuShadow guifg=DarkGrey guibg=Grey0
-
-enddef
-
-# no hl-Normal is set is set for default colorscheme
-# assumes light background, so if you start a noconfig gvim and do `:set bg=dark`
-# the hl-Normal guibg and guifg don't change, so it gets hard to see
-g:SetMyColors()
-
-# vi: et tw=100 sw=2 sts=-1 fdm=marker
+# vi: et sw=2 sts=-1 tw=100 fdm=marker
