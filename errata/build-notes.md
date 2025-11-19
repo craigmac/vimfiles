@@ -1,14 +1,19 @@
-# Building gvim from source notes
+# Building Vim/Nvim from Source Notes
 
-## GNU/Linux
+One section for each platform:
+
+* GNU/Linux
+* macOS
+* Windows
+
+## GNU/Linux {{{1
 
 Tested on Linux Mint 21, should work on Ubuntu/Debian as well.
 
 Huge version build with python3 interpreter and lua interpreter linked
-statically (not external .so files, but put right into the executable).
+statically (no external `.so` files - they are linked into the executable).
 
-### First build
-
+### First build {{{2
 
 ```sh
 mkdir ~/src && cd ~/src
@@ -37,7 +42,7 @@ make
 sudo make install
 ```
 
-### Subsequent builds
+### Subsequent builds {{{2
 
 ```sh
 cd ~/src/vim && git pull
@@ -47,37 +52,35 @@ make
 sudo make install
 ```
 
-## macOS
+## macOS {{{1
 
 Tested on macOS Monterey 12.3.1
 
-### Preparation
+### Preparation {{{2
 
 * Install homebrew.
 * Install xcode command line tools
 * vim configure script needs to find correct location for these on your $PATH,
-so add proper PATH values to your ~/.zshrc:
+  so add proper PATH values to your ~/.zshrc:
 
-
-```sh
+```bash
 xcode-select --install
 brew install python ruby cmake
 echo '$(brew --prefix)/bin:$PATH' >> ~/.zshrc
-
 ```
 
 My path when building (which works):
 
-```sh
+```bash
 echo $PATH
 /Library/Ruby/Gems/2.6.0/bin:/usr/local/opt/ruby@3.0/bin:/usr/local/opt/node@12/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Applications/CMake.app/Contents/bin
 ```
 
-### First build on macOS
+### First build on macOS {{{2
 
 All interpreters enabled, no GUI.
 
-```sh
+```bash
 mkdir ~/git && cd ~/git
 git clone https://github.com/vim/vim
 cd vim/src
@@ -87,9 +90,9 @@ sudo make
 sudo make install
 ```
 
-### Subsequent builds
+### Subsequent builds {{{2
 
-```sh
+```bash
 cd ~/git/vim/src
 git pull
 sudo make distclean
@@ -97,9 +100,11 @@ sudo make
 sudo make install
 ```
 
-### Removal
+### Removal {{{2
 
-```sh
+```bash
 cd ~/git/vim/src
 make uninstall
 ```
+
+# vi: tw=80 fdm=marker foldlevel=1
