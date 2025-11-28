@@ -1,6 +1,16 @@
+# dirs
+.vscode/
 cache/
-.netrwhist
 doc/
-plugged/
 pack/
+plugged/
+spell/
+tmp/
+
+# files
 *.*~
+.DS_Store
+.netrwhist
+tags
+todo.*
+Session.vim

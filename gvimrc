@@ -17,14 +17,9 @@ set guioptions-=r | " remove right hand scrollbar
 set guioptions-=L | " remove left hand scrollbar when window is vert split
 set guioptions-=T | " remove toolbar (clickable icons like cut/paste/etc.)
 
-function! s:WindowsGvimColors() abort
-  " see `:h win32-colors`
-  hi! Normal guibg=Sys_Window guifg=Sys_WindowText
-endfunction
-
 " windows 32/64 and in GUI - ref. `:h gui_w32.txt` for Windows specific stuff
 " NOTE: Windows has no concept of the "+ register so we need adjustments
-if (has('win32') || has('win64')) && has('gui_running')
+if has('win32') && has('gui_running')
   set guioptions+=! | " run `:!` in `:term` not a separate cmd.exe window
   set guioptions+=a | " (a)utoselect: copy visual selections to register *
   nnoremap <Leader>y "*y
@@ -33,14 +28,9 @@ if (has('win32') || has('win64')) && has('gui_running')
   xnoremap <Leader>p "*p
   nnoremap <Leader>P "*P
   xnoremap <Leader>P "*P
-  " HACK: gvim will say these are invalid colors until fully started
-  " so guard calling it right now, and setup autocmd to run our colours later
-  if v:vim_did_enter 
-    call s:WindowsGvimColors()
-  else
-    augroup my.augroup.VimEnter | autocmd!
-    autocmd VimEnter * ++once ++nested call s:WindowsGvimColors()
-  endif
+  " better drawn glyphs using options DirectX DirectWrite on Windows gVim
+  " (t)ext (a)nti-(a)lias mode: 0 default, 1 cleartype, 2 grayscale, 3 aliased
+  set renderoptions=type:directx,taa:3
 endif
 
 " gvim defaults to ~ which always messes me up and causes huge lag with fzf

@@ -1,0 +1,53 @@
+--- Terminal codes ---
+  t_AB=^[|%db         t_dl=^[|M           t_RB=               t_ti=^[|S^[[2 q
+  t_AF=^[|%df         t_ds=               t_RC=               t_TI=
+  t_AU=               t_Ds=               t_RI=               t_Ts=
+  t_AL=^[|%dL         t_EC=               t_Ri=               t_ts=
+  t_al=^[|L           t_EI=^[[2 q         t_RK=               t_u7=
+  t_bc=               t_fs=               t_RS=               t_ue=^[|24m
+  t_BE=^[[?2004h      t_fd=^[[?1004l      t_RT=               t_us=^[|4m
+  t_BD=^[[?200l       t_fe=^[[?1004h      t_RV=               t_Us=
+  t_cd=^[|j           t_GP=               t_Sb=               t_ut=y
+  t_ce=^[|K           t_IE=               t_SC=               t_vb=^[|B
+  t_Ce=               t_IS=               t_se=^[|39m         t_ve=^[|V
+  t_CF=               t_ke=               t_Sf=               t_vi=^[|v
+  t_cl=^[|J           t_ks=               t_SH=               t_VS=
+  t_cm=^[|%i%d;%dH    t_le=^H             t_SI=^[[6 q         t_vs=
+  t_Co=256            t_mb=               t_Si=               t_WP=
+  t_CS=               t_md=^[|1m          t_so=^[|91m         t_WS=
+  t_Cs=               t_me=^[|0m          t_SR=^[[4 q         t_XM=
+  t_cs=^[|%d;%dR      t_mr=^[|7m          t_sr=               t_xn=y
+  t_CV=^[|%d;%dV      t_ms=y              t_ST=               t_xs=
+  t_da=               t_nd=               t_Te=               t_ZH=^[|3m
+  t_db=               t_op=               t_te=^[|E^[[0 q     t_ZR=^[|0m
+  t_DL=^[|%dM         t_RF=               t_TE=               t_xo=
+  t_8f=^[[38;2;%lu;%lu;%lum
+  t_8b=^[[48;2;%lu;%lu;%lum
+  t_8u=^[[58;2;%lu;%lu;%lum
+--- Terminal keys ---
+t_@7 <End>       <ce>^CO   t_k; <F10>       <ce>^CD        <S-F3>      <ce>^CV
+t_K6 <kPlus>     <ce>^CN   t_kB <S-Tab>     <ce>^C^O       <S-F4>      <ce>^CW
+t_K7 <kMinus>    <ce>^CJ   t_kD <Del>       <ce>^CS        <S-F5>      <ce>^CX
+t_K9 <kMultiply> <ce>^C7   t_kI <Insert>    <ce>^CR        <S-F6>      <ce>^CY
+t_PE <PasteEnd>  ^[[201~   t_kN <PageDown>  <ce>^CQ        <S-F7>      <ce>^CZ
+t_PS <PasteStart> ^[[200~  t_kP <PageUp>    <ce>^CI        <S-F8>      <ce>^C[
+t_k1 <F1>        <ce>^C;   t_kb <BS>        <ce>^Cx        <S-F9>      <ce>^C\
+t_k2 <F2>        <ce>^C<   t_kd <Down>      <ce>^CP        <S-F10>     <ce>^C]
+t_k3 <F3>        <ce>^C=   t_kh <Home>      <ce>^CG        <C-Left>    <ce>^Cs
+t_k4 <F4>        <ce>^C>   t_kl <Left>      <ce>^CK        <C-Right>   <ce>^Ct
+t_k5 <F5>        <ce>^C?   t_kr <Right>     <ce>^CM        <C-Home>    <ce>^Cw
+t_k6 <F6>        <ce>^C@   t_ku <Up>        <ce>^CH        <C-End>     <ce>^Cu
+t_k7 <F7>        <ce>^CA        <Mouse>     <9b>M          <FocusGained> ^[[I
+t_k8 <F8>        <ce>^CB        <S-F1>      <ce>^CT        <FocusLost> ^[[O
+t_k9 <F9>        <ce>^CC        <S-F2>      <ce>^CU                    <ce>^Cy
+t_#2 <S-Home>    <ce>^C<c2>             t_KG <k4>        <ce>^C<ea>
+t_#4 <S-Left>    <ce>^C<c9>             t_KH <k5>        <ce>^C<ee>
+t_%i <S-Right>   <ce>^C<cb>             t_KI <k6>        <ce>^C<f2>
+t_*7 <S-End>     <ce>^C<cd>             t_KJ <k7>        <ce>^C<f6>
+t_F1 <F11>       <ce>^C<85>             t_KK <k8>        <ce>^C<fa>
+t_F2 <F12>       <ce>^C<86>             t_KL <k9>        <ce>^C<fe>
+t_KC <k0>        <ce>^C<da>                  <S-Up>      <ce>^C<c4>
+t_KD <k1>        <ce>^C<de>                  <S-Down>    <ce>^C<cf>
+t_KE <k2>        <ce>^C<e2>                  <S-F11>     <ce>^C<87>
+t_KF <k3>        <ce>^C<e6>                  <S-F12>     <ce>^C<88>
+
