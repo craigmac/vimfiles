@@ -30,7 +30,9 @@ if has('win32') && has('gui_running')
   xnoremap <Leader>P "*P
   " better drawn glyphs using options DirectX DirectWrite on Windows gVim
   " (t)ext (a)nti-(a)lias mode: 0 default, 1 cleartype, 2 grayscale, 3 aliased
-  set renderoptions=type:directx,taa:3
+  set renderoptions=type:directx,taamode:1
+  " `:h w32-experimental-keycode-trans-strategy`
+  call test_mswin_event('set_keycode_trans_strategy', {'strategy': 'experimental'})
 endif
 
 " gvim defaults to ~ which always messes me up and causes huge lag with fzf
